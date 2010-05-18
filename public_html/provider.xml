@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<ShortName>Waverley Model Railway Club</ShortName> 
+	<Description>Waverley Model Railway Club provider</Description> 
+	<Image height="16" width="16" type="image/icon">http://www.waverleymrc.org.au/wp-content/themes/wmrc/favico.ico</Image>
+	<InputEncoding>UTF-8</InputEncoding> 
+	<Url type="text/html" template="http://www.waverleymrc.org.au/?s={searchTerms}" />
+	<Url type="application/x-suggestions+json" template="http://www.waverleymrc.org.au/?s={searchTerms}"/>
+	<Url type="application/x-suggestions+xml" template="http://www.waverleymrc.org.au/?s={searchTerms}"/>
+	<ie:PreviewUrl type="text/html" template="http://www.waverleymrc.org.au/?s={searchTerms}"/>
+</OpenSearchDescription>

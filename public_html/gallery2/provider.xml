@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<ShortName>Waverley Model Railway Club Gallery</ShortName> 
+	<Description>Saerch the Waverley Model Railway Club image gallery</Description> 
+	<Image height="16" width="16" type="image/icon">http://www.waverleymrc.org.au/wp-content/themes/wmrc/favico.ico</Image>
+	<InputEncoding>UTF-8</InputEncoding> 
+	<Url type="text/html" template="http://www.waverleymrc.org.au/gallery2/main.php?g2_return=%2Fgallery2%2Fmain.php&amp;g2_formUrl=%2Fgallery2%2Fmain.php&amp;g2_authToken=6acf8de6759f&amp;g2_view=search.SearchScan&amp;g2_form%5BformName%5D=search_SearchBlock&amp;g2_form%5BsearchCriteria%5D={searchTerms}&amp;g2_form%5BuseDefaultSettings%5D=1" />
+	<Url type="application/x-suggestions+json" template="http://www.waverleymrc.org.au/gallery2/main.php?g2_return=%2Fgallery2%2Fmain.php&amp;g2_formUrl=%2Fgallery2%2Fmain.php&amp;g2_authToken=6acf8de6759f&amp;g2_view=search.SearchScan&amp;g2_form%5BformName%5D=search_SearchBlock&amp;g2_form%5BsearchCriteria%5D={searchTerms}&amp;g2_form%5BuseDefaultSettings%5D=1"/>
+	<Url type="application/x-suggestions+xml" template="http://www.waverleymrc.org.au/gallery2/main.php?g2_return=%2Fgallery2%2Fmain.php&amp;g2_formUrl=%2Fgallery2%2Fmain.php&amp;g2_authToken=6acf8de6759f&amp;g2_view=search.SearchScan&amp;g2_form%5BformName%5D=search_SearchBlock&amp;g2_form%5BsearchCriteria%5D={searchTerms}&amp;g2_form%5BuseDefaultSettings%5D=1"/>
+	<ie:PreviewUrl type="text/html" template="http://www.waverleymrc.org.au/gallery2/main.php?g2_return=%2Fgallery2%2Fmain.php&amp;g2_formUrl=%2Fgallery2%2Fmain.php&amp;g2_authToken=6acf8de6759f&amp;g2_view=search.SearchScan&amp;g2_form%5BformName%5D=search_SearchBlock&amp;g2_form%5BsearchCriteria%5D={searchTerms}&amp;g2_form%5BuseDefaultSettings%5D=1"/>
+</OpenSearchDescription>

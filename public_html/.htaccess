@@ -1,0 +1,32 @@
+Redirect 301 /exhibition.php http://www.waverleymrc.org.au/13/
+Redirect 301 /contact.php http://www.waverleymrc.org.au/contact-us/
+Redirect 301 /about.php http://www.waverleymrc.org.au/about-the-club/
+
+#Redirect 301 /gallery http://gallery.waverleymrc.org.au/
+#Redirect 301 /gallery.php http://gallery.waverleymrc.org.au/
+#Redirect 301 /gallery/ http://gallery.waverleymrc.org.au/
+
+Redirect 301 /stats http://www.waverleymrc.org.au/awstats/awstats.pl?config=www.waverleymrc.org.au
+
+ExpiresActive On
+
+# Set up caching on media files for 1 week
+<FilesMatch "\.(gif|jpg|jpeg|png|swf|js|css)$">
+#ExpiresDefault A5443200
+ExpiresDefault "access plus 3 months"
+Header append Cache-Control "public"
+</FilesMatch>
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+
+#php_value auto_prepend_file /home/mgreen/public_html/waverleymrc.org.au/mobile-start.php
+#php_value auto_append_file /home/mgreen/public_html/waverleymrc.org.au/mobile-end.php
