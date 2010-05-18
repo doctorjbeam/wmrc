@@ -1,0 +1,44 @@
+@charset "utf-8";
+/* CSS Document */
+
+body	{ padding: 0; margin: 0; }
+body	{ font-family: Calibri, "Trebuchet MS", Tahoma, Helvetica, sans-serif; }
+body	{ background: #e3e3e3; }
+
+.wrapper	{ margin-left: auto; margin-right: auto; width: 960px; }
+.clear		{clear:both; display:block; overflow:hidden; visibility:hidden; width:0; height:0;}
+
+#topBar	{ background: url(img/topbarbg.png); height: 15px; overflow: hidden; position: absolute; top: 0; left: 0; width: 100%; }
+
+#header	{ height: 80px; }
+#header .wrapper	{ padding: 20px; background: #fafcfd; }
+#header img	 	{ margin-top: 27px; margin-bottom: -20px; }
+
+#menu	{ float: right; text-transform: uppercase; margin-top: -2px; }
+#menu ul	{ margin: 0; padding: 0; }
+#menu li	{ list-style: none; float: left; }
+#menu li a	{ display: block; padding: 0 0.4em; height: 20px; line-height: 20px; }
+#menu li a			{ text-decoration: none; color: #000; font-weight: bold; font-size: 90%; }
+#menu li a:hover	{ color: #039; text-decoration: underline; }
+
+
+#body li	{ list-style: none; }
+#body .wrapper	{ background: #fafcfd; }
+
+.roundabout-holder 					{list-style:none; width:500px; height:300px; margin:0px auto;}
+.roundabout-moveable-item 			{font-size:12px!important; height:300px; width:600px; cursor:pointer; padding:5px; border:1px solid #aaaaaa; -webkit-border-radius:5px; -moz-border-radius:5px; background:#f9f9f9;}
+.roundabout-moveable-item img 		{height:100%; width:100%; background-color:#FFFFFF; margin:0;}
+.roundabout-in-focus 				{cursor:auto;}
+.roundabout-in-focus:hover			{-webkit-box-shadow:0px 0px 20px #787878; -moz-box-shadow:0px 0px 20px #787878; background:#f9f9f9;}
+.roundabout-holder span				{display:none; font-size:12px;}
+.roundabout-in-focus:hover span		{display:inline; position:absolute; bottom:5px; right:5px; padding:8px 20px; background:#f9f9f9; color:#000000; z-index:999; -webkit-border-top-left-radius: 5px; -moz-border-radius-topLeft: 5px; font-size : 12px;border-left:1px solid #aaaaaa; border-top:1px solid #aaaaaa; }
+.roundabout a:active,
+.roundabout a:focus,
+.roundabout a:visited				{outline:none; text-decoration:none;}
+.roundabou li 						{margin:0}
+a img								{border:none; outline:0;}
+.clearfix:after						{clear:both; content:' '; display:block; font-size:0; line-height:0; visibility:hidden; width:0; height:0;}
+* html .clearfix 					{height:1%;}
+.grid_12 							{display:inline; float:left; position:relative;}
+#featured							{margin:10px 0 40px 0;}
+
