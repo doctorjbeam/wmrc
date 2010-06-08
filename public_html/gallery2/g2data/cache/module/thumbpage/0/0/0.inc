@@ -1,1 +1,0 @@
-|a:7:{s:10:"movieTypes";s:0:"";s:9:"pageTypes";s:71:"application/pdf|application/photoshop|application/postscript|image/tiff";s:10:"_callbacks";s:0:"";s:16:"_requiredCoreApi";s:4:"7,34";s:18:"_requiredModuleApi";s:3:"3,6";s:16:"_templateVersion";s:1:"1";s:8:"_version";s:5:"1.0.8";}

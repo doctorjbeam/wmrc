@@ -1,2 +1,0 @@
-|a:12:{s:3:"bcc";s:0:"";s:6:"footer";s:64:"This eCard was sent with Gallery 2 - Your photos on your website";s:6:"format";s:4:"html";s:4:"from";s:23:"Gallery &lt;gallery&gt;";s:6:"header";s:55:"Hi %toName%!
-%fromName% (%from%) has sent you an eCard:";s:7:"subject";s:27:"You have been sent an eCard";s:16:"validation.level";s:4:"HIGH";s:10:"_callbacks";s:30:"getItemLinks|getSiteAdminViews";s:16:"_requiredCoreApi";s:4:"7,27";s:18:"_requiredModuleApi";s:3:"3,9";s:16:"_templateVersion";s:1:"1";s:8:"_version";s:5:"1.0.4";}

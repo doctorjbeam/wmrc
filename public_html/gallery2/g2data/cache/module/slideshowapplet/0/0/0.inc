@@ -1,1 +1,0 @@
-|a:7:{s:25:"slideshowdefaultVariables";s:47:"slideshowRecursive=false|slideshowMaxPictures=0";s:26:"slideshowoverrideVariables";s:13:"toSysOut=true";s:10:"_callbacks";s:30:"getItemLinks|getSiteAdminViews";s:16:"_requiredCoreApi";s:4:"7,27";s:18:"_requiredModuleApi";s:3:"3,9";s:16:"_templateVersion";s:1:"1";s:8:"_version";s:6:"1.0.13";}

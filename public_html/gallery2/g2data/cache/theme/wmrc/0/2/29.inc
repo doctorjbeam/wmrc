@@ -1,1 +1,0 @@
-|a:2:{s:12:"contentWidth";s:3:"930";s:7:"perPage";s:2:"32";}

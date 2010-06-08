@@ -1,1 +1,0 @@
-|a:8:{s:30:"failCount-core.UserLogin.admin";s:1:"1";s:36:"failCount-core.UserLogin.doctorjbeam";s:1:"1";s:22:"failedAttemptThreshold";s:1:"3";s:10:"_callbacks";s:17:"getSiteAdminViews";s:16:"_requiredCoreApi";s:4:"7,20";s:18:"_requiredModuleApi";s:3:"3,6";s:16:"_templateVersion";s:1:"1";s:8:"_version";s:5:"1.1.7";}

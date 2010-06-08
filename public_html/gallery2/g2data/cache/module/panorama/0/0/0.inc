@@ -1,1 +1,0 @@
-|a:8:{s:8:"itemLink";s:1:"1";s:8:"itemType";s:1:"1";s:5:"width";s:3:"800";s:10:"_callbacks";s:30:"getSiteAdminViews|getItemLinks";s:16:"_requiredCoreApi";s:4:"7,20";s:18:"_requiredModuleApi";s:3:"3,6";s:16:"_templateVersion";s:1:"1";s:8:"_version";s:6:"1.0.10";}

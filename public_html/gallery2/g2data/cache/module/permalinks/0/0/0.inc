@@ -1,1 +1,0 @@
-|a:6:{s:13:"autoPermalink";s:1:"0";s:10:"_callbacks";s:17:"getSiteAdminViews";s:16:"_requiredCoreApi";s:4:"7,34";s:18:"_requiredModuleApi";s:3:"3,6";s:16:"_templateVersion";s:1:"1";s:8:"_version";s:6:"1.0.12";}

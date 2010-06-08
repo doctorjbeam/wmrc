@@ -1,1 +1,0 @@
-|a:8:{s:17:"digibugCustomerId";s:4:"3153";s:15:"digibugIdChoice";s:7:"gallery";s:18:"digibugPricelistId";s:4:"8491";s:10:"_callbacks";s:30:"getSiteAdminViews|getItemLinks";s:16:"_requiredCoreApi";s:4:"7,43";s:18:"_requiredModuleApi";s:3:"3,9";s:16:"_templateVersion";s:1:"1";s:8:"_version";s:5:"1.0.8";}

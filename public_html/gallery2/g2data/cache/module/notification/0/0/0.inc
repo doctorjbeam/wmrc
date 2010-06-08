@@ -1,1 +1,0 @@
-|a:8:{s:15:"id.eventMapLock";s:2:"17";s:12:"id.hintsLock";s:2:"18";s:16:"_activeListeners";s:6:"a:0:{}";s:10:"_callbacks";s:66:"getSiteAdminViews|getUserAdminViews|getItemLinks|getItemAdminViews";s:16:"_requiredCoreApi";s:4:"7,37";s:18:"_requiredModuleApi";s:3:"3,9";s:16:"_templateVersion";s:1:"0";s:8:"_version";s:5:"1.0.3";}

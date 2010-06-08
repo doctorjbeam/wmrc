@@ -4,3 +4,5 @@ public_html/cache
 public_html/gallery2/cache
 .ftpquota
 .htaccess
+public_html/wp-content/cache
+public_html/gallery2/g2data/cache
