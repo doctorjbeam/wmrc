@@ -63,7 +63,7 @@ $gallery->setConfig('setup.password', 'xx5cn42f');
  *
  * Don't make this the same as your gallery directory!
  */
-$gallery->setConfig('data.gallery.base', '/home/mgreen/public_html/waverleymrc.org.au/gallery2/g2data/');
+$gallery->setConfig('data.gallery.base', '/home/mgreen/public_html/waverleymrc.org.au/public_html/gallery2/g2data/');
 
 /*
  * Gallery can store its data in multiple different back ends.  Currently we

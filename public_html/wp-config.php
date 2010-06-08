@@ -1,9 +1,9 @@
 <?php
 // ** MySQL settings ** //
-define('DB_NAME', 'wmrc');    // The name of the database
-define('DB_USER', 'wmrc');     // Your MySQL username
+define('DB_NAME', 'mgreen_wmrc');    // The name of the database
+define('DB_USER', 'mgreen_wmrc');     // Your MySQL username
 define('DB_PASSWORD', 'wangcaster'); // ...and password
-define('DB_HOST', '202.80.177.50');    // 99% chance you won't need to change this value
+define('DB_HOST', 'localhost');    // 99% chance you won't need to change this value
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
