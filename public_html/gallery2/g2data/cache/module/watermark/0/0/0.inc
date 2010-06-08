@@ -1,0 +1,1 @@
+|a:9:{s:19:"allowUserWatermarks";s:1:"1";s:18:"defaultWatermarkId";s:0:"";s:21:"forceDefaultWatermark";s:1:"0";s:18:"hotlinkWatermarkId";s:0:"";s:10:"_callbacks";s:35:"getSiteAdminViews|getUserAdminViews";s:16:"_requiredCoreApi";s:4:"7,45";s:18:"_requiredModuleApi";s:3:"3,6";s:16:"_templateVersion";s:1:"1";s:8:"_version";s:5:"1.1.8";}

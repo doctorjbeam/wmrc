@@ -1,0 +1,1 @@
+[31-Mar-2010 21:42:49] PHP Warning:  Missing argument 2 for update_option(), called in /home/mgreen/public_html/waverleymrc.org.au/wp-content/plugins/events-calendar/ec_db.class.php on line 211 and defined in /home/mgreen/public_html/waverleymrc.org.au/wp-includes/functions.php on line 495

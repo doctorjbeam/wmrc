@@ -1,0 +1,1 @@
+/home/wmrc/www/public_html/wp-content/plugins/wp-cache/wp-cache-phase1.php
