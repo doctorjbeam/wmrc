@@ -7,12 +7,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="verify-v1" content="LrDVNdEmfbnluoEGLobgpCm2eEhpTvr1wrYRB7mVptY=" />
-    <meta name="verify-v1" content="LrDVNdEmfbnluoEGLobgpCm2eEhpTvr1wrYRB7mVptY=" >
     <title>Waverley Model Railway Club</title>
     <link href="<?php bloginfo('stylesheet_directory'); ?>/style.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="<?php bloginfo('stylesheet_directory'); ?>/favico.ico" type="image/x-icon">
     <link rel="icon" href="<?php bloginfo('stylesheet_directory'); ?>/favico.ico" type="image/ico">
     <link rel="shortcut icon" href="favico.ico"> 
+    <meta name="keywords" content="wmrc waverley waverleymrc melbourne model railway victoria train ho n scale exhibition models">
+    <meta name="description" content="Waverley Model Railway Club, established 1970. Based in the south-east suburbs of Melbourne, Australia, we have a number of N, HO and OO scale layouts which make appearances at a number of exhibitions each year. We also host our own annual exhibition on the Queens Birthday long weekend in June. ">
     <script type="text/javascript" src="<?php bloginfo('stylesheet_directory'); ?>/scripts.js"></script>
 	<link title="Waverley Model Railway Club" rel="search" type="application/opensearchdescription+xml"  href="http://www.waverleymrc.org.au/provider.xml">
 </head>
