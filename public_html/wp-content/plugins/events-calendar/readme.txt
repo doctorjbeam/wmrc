@@ -1,12 +1,12 @@
 === Events Calendar ===
 
-Contributors: snumb130, heirem, laplix
+Contributors: snumb130
 Donate link: http://www.wp-eventscalendar.com/donate
-Version: 6.5.2.2
+Version: 6.7.8
 Tags: event, calendar, date, time, widget, admin, sidebar, plugin, javascript, thickbox, jquery, tooltip, ajax
 Requires at least: 2.7.1
-Tested up to: 2.8.4
-Stable tag: 6.6
+Tested up to: 3.0
+Stable tag: 6.7.8
 
 Events-Calendar is a versatile replacement for the original WordPress calendar adding many useful functions to keep track of your events.
 
@@ -18,11 +18,9 @@ The plugin is widget ready so you can easily add a small calendar to the main si
 
 If you are not using a widget ready theme, you can still have the calendar on your sidebar.  Simply place `<?php sidebarEventsCalendar();?>` (or `<?php sidebarEventsList($number_of_items);?>` if you want a list) in the sidebar file. The widget can also show a specified number of events as a list.  You will find these options under the widget option.
 
-The ability to add a large public calendar is available by posting a page and adding `[[EventsCalendarLarge]]` to the page content to create a stand alone calendar page. Also, when entering an event from the admin section, you can check the box saying "Create Post for Event", which will cause a post to be created with the event information.
+The ability to add a large public calendar is available by posting a page and adding `[events-calendar-large]` to the page content to create a stand alone calendar page. Also, when entering an event from the admin section, you can check the box saying "Create Post for Event", which will cause a post to be created with the event information.
 
 Additional features will be added so make sure that you keep up to date on upcoming changes and new features by subscribing to the [RSS feed on the Events Calendar site](http://www.wp-eventscalendar.com/feed). If you have a feature you would like added in future versions, feel free to submit it to our [bug tracker](http://tracker.eventscalendar.com).
-
-(September 2009) Events-Calendar is actually getting a huge work over which will add lots of new functionnlities, thanks to Heirem who took over last year to work on this new version. More information about the next 7.0 version on [Heirem's blog](http://heirem.fr).
 
 == Installation ==
 
@@ -42,6 +40,54 @@ Additional features will be added so make sure that you keep up to date on upcom
 6. Events Calendar as Large Calendar
 
 == Changelog ==
+= 6.7.8 =
+* Checking for existance of timezone function
+* Add Japanese language file from blog.bng.net
+
+= 6.7.7 =
+* Timezone is now reading from wordpress timezone for choosing current day.  I am silly.
+
+= 6.7.6 =
+* Added option to hide Sponsor messages
+* Fix added for conflict with ddsmoothmenu.
+* Removed call to dimensions jquery plugin.
+
+= 6.7.5 =
+* Removed calendar and time select buttons until errors are resolved.
+* Added sponsorship message.
+
+= 6.7.3 =
+* Corrected problem where quotes not escaped properly in admin section with title.  Thanks Pat
+
+= 6.7.2 =
+* Events and tooltip issues in large calendar.
+
+= 6.7.1 =
+* Fixed disappearing tooltips.
+
+= 6.7 =
+* Fixed the hover error to show info when hover over date.
+
+= 6.6.4 =
+* Fixed error causing extra characters during activation.  Thanks brianlayman
+
+= 6.6.3 =
+* Added fix for thickbox popup show wrong day (props to nenya)
+* Fixed error with tooltips not showing.  thanks dhobeika.
+
+= 6.6.2 =
+* Fixed error with loading image overwriting all pics.
+
+= 6.6.1 =
+* All changes in 6.6.1 came from byronrode
+* Added the ability to enable/disable tooltips in the administration
+* Fixed Wordpress 3.0 initialization issues
+* Added "hasEvent" class to table cell for days that have events
+* Modified the LargeCalendar and LargeCalendarJS to echo by default, but added the ability to return the markup using bool(true/false). This is merely documented for historical purposes as the change was needed for the new shortcode loading of the calendar to work and has no effect within any templates.
+* Added Native WP Shortcode for the plugin to load the Large Calendar. Now loads by calling "[events-calendar-large]" replacing the existing method. Please replace where necessary in your pages/posts.
+* The WP shortcode addition also stops the plugin from preventing other plugins/themes shortcodes to load when used on the same page as the calendar.
+* Cleaned up JS from above which was looping when navigating through 2 or more months.
+* Changed the JS in the sidebar calendar to load the JS and prev/next links correctly when navigating through months
 
 = 6.6 =
 * WPEC is now WP 2.7 and 2.8 ready. This fixes issues #20, #21 and #38..
@@ -272,4 +318,3 @@ Additional features will be added so make sure that you keep up to date on upcom
 = I use a theme with a dark background.  My events don't show well in the large calendar view. =
 
 In the css folder there is a file called events-calendar.css. This file has the css for the calendar. It is commented as Large Calendar.
-

@@ -1,3 +1,4 @@
+bak.public_html
 mgreen_wmrc.sql
 public_html/error_log
 public_html/cache
@@ -6,3 +7,6 @@ public_html/gallery2/cache
 .htaccess
 public_html/wp-content/cache
 public_html/gallery2/g2data/cache
+public_html/wp-admin.old
+public_html/wp-content.old
+public_html/wp-includes.old

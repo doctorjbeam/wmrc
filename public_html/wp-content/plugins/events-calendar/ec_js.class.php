@@ -1,28 +1,29 @@
 <?php
 /**
- * This file contains the EC_JS class.
+ * This file contains WP Events Calendar plugin.
  *
- * @package 			WP-Events-Calendar
+ * This is the main WPEC file.
+ * @internal			Complete the description.
+ *
+ * @package			WP-Events-Calendar
+ * @since			1.0
  * 
- * @autbor 			Luke Howell <luke@wp-eventscalendar.com>
- * @author 			Brad Bodine <brad@wp-eventscalendar.com>
- * @author 			René MALKA <heirem@wp-eventscalendar.com>
+ * @autbor			Luke Howell <luke@wp-eventscalendar.com>
  *
- * @copyright 			Copyright (c) 2007-2009 Luke Howell
- * @copyright 			Copyright (c) 2007-2009 Brad Bodine
- * @copyright 			Copyright (c) 2008-2009 René Malka
+ * @copyright			Copyright (c) 2007-2009 Luke Howell
  *
- * @license 			GPLv3 {@link http://www.gnu.org/licenses/gpl}
+ * @license			GPLv3 {@link http://www.gnu.org/licenses/gpl}
  * @filesource
  */
 /*
+--------------------------------------------------------------------------
+$Id$
 --------------------------------------------------------------------------
 This file is part of the WordPress Events Calendar plugin project.
 
 For questions, help, comments, discussion, etc., please join our
 forum at {@link http://www.wp-eventscalendar.com/forum}. You can
-also go to Luke's ({@link http://www.lukehowelll.com}) and
-Heirem's ({@link http://heirem.fr}) blogs.
+also go to Luke's ({@link http://www.lukehowelll.com}) blog.
 
 WP Events Calendar is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -179,7 +180,7 @@ class EC_JS {
 								. '</dd>';
 						
 						} else {
-							$output .= '<dd class="EC-tt-widget-day-event-detail>'.__('at','events-calendar').' '.$startTime.'</dd>';
+							$output .= '<dd class="EC-tt-widget-day-event-detail">'.__('at','events-calendar').' '.$startTime.'</dd>';
 						}
 					}
 				}
@@ -221,7 +222,8 @@ class EC_JS {
 				foreach ( $elemnts_date as $elem_dt ) {
 					// Find the DAY in the format string
 					if (substr_count('dDjlNSwz', $elem_dt))
-						$date_show .= ucfirst($this->locale->get_weekday(gmdate('w', mktime(0,0,0,$month,$day,$year)))) . ' ' . $day . ' ';
+						$date_show .= ucfirst($this->locale->get_weekday(date('w', mktime(0,0,0,$month,$day,$year)))) . ' ' . $day . ' '; // props to nenya
+						//$date_show .= ucfirst($this->locale->get_weekday(gmdate('w', mktime(0,0,0,$month,$day,$year)))) . ' ' . $day . ' ';
 					
 					// Find the MONTH in the format string
 					if (substr_count('FmMnt', $elem_dt))
@@ -248,7 +250,7 @@ class EC_JS {
 				}
 
 				// make sure we don't double escape
-				if (preg_match("/\'/", $output))
+				if (preg_match("/\'|\"/", $output))
 					$output = stripslashes($output);
 ?>
 		ecd.jq('#events-calendar-<?php echo $day;?>')
@@ -256,22 +258,21 @@ class EC_JS {
 			.attr('style', '<?php echo $dayHasEventCSS;?>')
 			.mouseover(function() {
 				ecd.jq(this).css('cursor', 'pointer');
-      	})
-	      .click(function() {
-         	tb_show(	"<?php echo $date_show; ?>", "<?php bloginfo('siteurl');?>?EC_view=day&EC_month=<?php echo $month;?>&EC_day=<?php echo $day;?>&EC_year=<?php echo trim($year);?>&TB_iframe=true&width=<?php echo $tbw;?>&height=<?php echo $tbh;?>", false);
-      	})
-      	.tooltip({
-        		track: true,
-        		delay: 0,
-        		showURL: false,
-        		opacity: 1,
-        		fixPNG: true,
-        		showBody: " - ",
-        		// extraClass: "pretty fancy",
-        		top: -15,
-        		left: 10
+			})
+	    .click(function() {
+       	tb_show(	"<?php echo $date_show; ?>", "<?php bloginfo('siteurl');?>?EC_view=day&EC_month=<?php echo $month;?>&EC_day=<?php echo $day;?>&EC_year=<?php echo trim($year);?>&TB_iframe=true&width=<?php echo $tbw;?>&height=<?php echo $tbh;?>", false);
+			})
+			.tooltip({
+				track: true,
+				delay: 0,
+				showURL: false,
+				opacity: 1,
+				fixPNG: true,
+				showBody: " - ",
+				// extraClass: "pretty fancy",
+				top: -15,
+				left: 10
 			});
-
 <?php
 			}
 		}
@@ -286,7 +287,7 @@ class EC_JS {
 				ecd.jq.get("<?php bloginfo('siteurl');?>/index.php",
 					{EC_action: "switchMonth", EC_month: <?php echo $month-1;?>, EC_year: <?php echo $year;?>},
 					function(ecdata) {
-						ecd.jq('#calendar_wrap').empty().append(ecd.jq(ecdata).html());
+						ecd.jq('#calendar_wrap').empty().append( ecdata );
 					});
 				});
 
@@ -300,13 +301,13 @@ class EC_JS {
 				ecd.jq.get("<?php bloginfo('siteurl');?>/index.php",
 					{EC_action: "switchMonth", EC_month: <?php echo ($month+1);?>, EC_year: <?php echo $year;?>},
 					function(ecdata) {
-						ecd.jq('#calendar_wrap').empty().append(ecd.jq(ecdata).html());
+						ecd.jq('#calendar_wrap').empty().append( ecdata );
 					});
 				});
 
 		ecd.jq.preloadImages = function() {
 			for (var i = 0; i < arguments.length; i++) {
-				jQuery("img").attr("src", arguments[i]);
+				jQuery("#calendar_wrap img").attr("src", arguments[i]);
 			}
 		}
 		ecd.jq.preloadImages("<?php echo EVENTSCALENDARIMAGESURL . '/loading.gif';?>");
@@ -319,7 +320,9 @@ class EC_JS {
 	 * @param int $m 		the month
 	 * @param int $y 		the year
 	 */
-	function calendarDataLarge($m, $y) {
+	// added $echo bool for output or returning markup and JS. 
+	// Byron Rode - 6.6.1 patch
+	function calendarDataLarge($m, $y, $echo = true) {
 		global $current_user;
 
 		// Localisation
@@ -330,6 +333,14 @@ class EC_JS {
 
 		$options = get_option('optionsEventsCalendar');
 		$lastDay = date('t', mktime(0, 0, 0, $m, 1, $y));
+		
+		$adaptedCSS = $options['adaptedCSS'];
+		$dayHasEventCSS = '';
+		$the_js = '';
+		if (!$adaptedCSS)
+			$dayHasEventCSS = (isset($options['dayHasEventCSS']) && !empty($options['dayHasEventCSS']))
+				? $options['dayHasEventCSS']
+				: 'color:red;';
 
 		for($d = 1; $d <= $lastDay; $d++) {
 			$sqldate = date('Y-m-d', mktime(0, 0, 0, $m, $d, $y));
@@ -373,7 +384,6 @@ class EC_JS {
 						list($ec_endhour, $ec_endminute, $ec_endsecond) = explode(":", $endTime);
 						$endTime = date($options['timeFormatLarge'], mktime($ec_endhour, $ec_endminute, $ec_endsecond, $ec_endmonth, $ec_endday, $ec_endyear));
 					}
-
 					if (!empty($title) && !is_null($title))
 						$output .= '<div class="EC-tt-title"><span class="EC-tt-data EC-tt-title-data">'.$title.'</span></div>';
 					if (!empty($location) && !is_null($location))
@@ -409,7 +419,7 @@ class EC_JS {
 					// but this is going to do for now, until 7.0 is up and running.
 					// and if i am to start testing 7.0, i need to stop working on
 					// this one.
-					$pattern = "/\'/";
+					$pattern = "/\'|\"/";
 					if (preg_match($pattern, $titlinked))
 						$titlinked = stripslashes($titlinked);
 
@@ -428,60 +438,86 @@ class EC_JS {
 					else
 						$EC_tt_special = 'EC-tt-25';
 					
-?>
-ecd.jq('#events-calendar-<?php echo $d;?>Large')
-	.append('<span class="event-block" id="events-calendar-<?php echo $id;?>Large"><?php echo addslashes($titlinked);?></span>');
-ecd.jq('#events-calendar-<?php echo $id;?>Large')
-	.attr('title', '<?php echo addslashes($output);?>')
-	.mouseover(function() {
-		ecd.jq(this).css('cursor', '<?php echo $cursor; ?>');
-		})
-	.tooltip({
-		track: true,
-		delay: 0,
-		showURL: false,
-		opacity: 1,
-		fixPNG: true,
-		showBody: " - ",
-		extraClass: "<?php echo $EC_tt_special;?>",
-		top: -15,
-		left: 15
-	});
-<?php
+
+					$the_js  .= '	ecd.jq("#events-calendar-'.$d.'Large").append(\'<span class="event-block" id="events-calendar-'.$id.'Large">' . addslashes($titlinked) . '</span>\');
+						ecd.jq("#events-calendar-'.$id.'Large")
+							.attr("title", "")
+							.mouseover(function() {
+								ecd.jq(this).css("cursor", \''.$cursor.'\');';
+						
+								if($options['disableTooltips'] !== 'yes'){
+								$the_js .= '
+							})
+							.attr("title", \''.addslashes($output).'\')
+							.tooltip({
+									track: true,
+									delay: 0,
+									showURL: false,
+									opacity: 1,
+									fixPNG: true,
+									showBody: " - ",
+									extraClass: "'.$EC_tt_special.'",
+									top: -15,
+									left: 15
+								});';
+								}else{
+									$the_js .= '});';
+								}
+					// added class for days that have events for styling;
+					// Byron Rode - Patch 6.6.1
+					if($dayHasEventCSS){ $the_js .= '
+						ecd.jq("#events-calendar-'.$d.'Large").parent().addClass("hasEvent");'; 
+					}
+		
 				} // if
 			} //endforeach
 		}
-?>
-ecd.jq('#EC_previousMonthLarge')
-	.append("&#171;&nbsp;<?php echo ucfirst($this->get_incrMonth($m-1));?>")
-	.mouseover(function() {
-		ecd.jq(this).css('cursor', 'pointer')
-		})
-	.click(function() {
-		ecd.jq('#EC_ajaxLoader').show('slow');
-		ecd.jq.get("<?php bloginfo('siteurl');?>/index.php",
-        {EC_action: "switchMonthLarge", EC_month: "<?php echo $m-1;?>", EC_year: "<?php echo $y;?>"},
-        function(ecdata) {
-			 ecd.jq('#EC_ajaxLoader').hide('slow');
-          ecd.jq('#calendar_wrapLarge').empty().append(ecd.jq(ecdata).html());
-        });
-      });
-
-ecd.jq('#EC_nextMonthLarge')
-	.prepend("<?php echo ucfirst($this->get_incrMonth($m+1));?>&nbsp;&#187;")
-	.mouseover(function() {
-		ecd.jq(this).css('cursor', 'pointer')
-		})
-	.click(function() {
-		ecd.jq('#EC_ajaxLoader').show('slow');
-		ecd.jq.get("<?php bloginfo('siteurl');?>/index.php",
-			{EC_action: "switchMonthLarge", EC_month: "<?php echo $m+1;?>", EC_year: "<?php echo $y;?>"},
-			function(ecdata) {
-				ecd.jq('#EC_ajaxLoader').hide('slow');
-				ecd.jq('#calendar_wrapLarge').empty().append(ecd.jq(ecdata).html());
-			});
-		});
-<?php
+		// Navigation (prev/next) updates for Patch 6.6.1
+		$siteurl = get_bloginfo('siteurl');
+		$prevmonth = ucfirst($this->get_incrMonth($m-1));
+		$nextmonth = ucfirst($this->get_incrMonth($m+1));
+		
+		
+		$the_js .= '
+		ecd.jq("#EC_previousMonthLarge")
+			.append("&laquo;&nbsp;'. $prevmonth .'")
+			.mouseover(function() {
+				ecd.jq(this).css(\'cursor\', \'pointer\')
+				})
+			.click(function() {
+				ecd.jq(\'#EC_ajaxLoader\').show(\'slow\');
+				ecd.jq.get(\''.$siteurl.'/index.php\',
+		        {EC_action: "switchMonthLarge", EC_month: "'. ($m-1) .'", EC_year: "'. $y .'"},
+		        function(ecdata) {
+					ecd.jq(\'#EC_ajaxLoader\').hide(\'slow\');
+		          	ecd.jq(\'#calendar_wrapLarge\').empty().append( ecdata );
+					
+		        });
+				$(this).unbind(\'click\');
+		      });
+			
+			ecd.jq(\'#EC_nextMonthLarge\')
+				.prepend("'. $nextmonth .'&nbsp;&raquo;")
+				.mouseover(function() {
+					ecd.jq(this).css(\'cursor\', \'pointer\')
+					})
+				.click(function() {
+					ecd.jq(\'#EC_ajaxLoader\').show(\'slow\');
+					ecd.jq.get(\''.$siteurl.'/index.php\',
+						{EC_action: "switchMonthLarge", EC_month: "'. ($m+1) .'", EC_year: "'. $y .'"},
+						function(ecdata) {
+							ecd.jq(\'#EC_ajaxLoader\').hide(\'slow\');
+							ecd.jq(\'#calendar_wrapLarge\').empty().append( ecdata );
+						});
+					})
+		';
+				
+				
+		if($echo !== false){ 
+			echo $the_js; 
+		}else{ 
+			return $the_js; 
+		}
 	} // end of calendarDataLarge
 
 	/**
@@ -551,6 +587,11 @@ ecd.jq('#EC_nextMonthLarge')
 // <![CDATA[
 //jQuery.noConflict();
 //(function($) {
+<?php 
+/**
+ * Fix added for missing tooltip provided by Andrew Huggins
+ */
+?>
 	ecd.jq(document).ready(function() {
 		ecd.jq('#events-calendar-list-<?php echo $id;?>')
 			.attr('title', '<?php echo addslashes($output);?>')
@@ -558,9 +599,9 @@ ecd.jq('#EC_nextMonthLarge')
 				ecd.jq(this).css('cursor', 'pointer');
 				});
 		ecd.jq('#events-calendar-list-<?php echo $e->id;?>').tooltip({
-        delay:0,
-        track:true
-      });
+			delay:0,
+			track:true
+		});
 	});
 //})(jQuery);
 //]]>

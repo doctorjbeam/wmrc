@@ -1,45 +1,43 @@
 <?php
 /**
- * This file contains the EC_DB class.
+ * This file contains WP Events Calendar plugin.
  *
- * @package 			WP-Events-Calendar
+ * This is the main WPEC file.
+ * @internal			Complete the description.
+ *
+ * @package			WP-Events-Calendar
+ * @since			1.0
  * 
  * @autbor			Luke Howell <luke@wp-eventscalendar.com>
- * @author 			Brad Bodine <brad@wp-eventscalendar.com>
- * @author 			René MALKA <heirem@wp-eventscalendar.com>
  *
- * @copyright 			Copyright (c) 2007-2009 Luke Howell
- * @copyright 			Copyright (c) 2007-2009 Brad Bodine
- * @copyright 			Copyright (c) 2008-2009 René Malka
+ * @copyright			Copyright (c) 2007-2009 Luke Howell
  *
- * @license 			GPLv3 {@link http://www.gnu.org/licenses/gpl}
+ * @license			GPLv3 {@link http://www.gnu.org/licenses/gpl}
  * @filesource
  */
 /*
----------------------------------------------------------------------
+--------------------------------------------------------------------------
+$Id$
+--------------------------------------------------------------------------
 This file is part of the WordPress Events Calendar plugin project.
 
 For questions, help, comments, discussion, etc., please join our
 forum at {@link http://www.wp-eventscalendar.com/forum}. You can
-also go to Luke's ({@link http://www.lukehowelll.com}) and
-Heirem's ({@link http://heirem.fr}) blogs.
+also go to Luke's ({@link http://www.lukehowelll.com}) blog.
 
-You can also submit bugs or feature requests at this address:
-http://tracker.wp-eventscalendar.com/my_view_page.php.
-
-This program is free software: you can redistribute it and/or modify
+WP Events Calendar is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
----------------------------------------------------------------------
+--------------------------------------------------------------------------
 */
 if(!class_exists('EC_DB')):
 
@@ -143,7 +141,7 @@ class EC_DB {
 			add_option("events_calendar_db_version", $this->dbVersion);
 		}
 
-		$installed_ver = get_option( "eventscalendar_db_version" );
+		$installed_ver = get_option( "events_calendar_db_version" );
 
 		if ($installed_ver != $this->dbVersion) {
 			$sql = "CREATE TABLE " . $this->mainTable . " (
@@ -208,7 +206,7 @@ class EC_DB {
 			$widget_options['type'] = 'calendar';
 		if (!isset($widget_options['listCount']))
 			$widget_options['listCount'] = 5;
-		update_option('widgetEventsCalendar');
+		update_option('widgetEventsCalendar', $widget_options);
 	}
 
 	/**
@@ -269,6 +267,7 @@ class EC_DB {
 		// todo get rid of the quotes here. don't need them anymore
 		// since we are using wpdb->prepare()
 		$postID = is_null($postID) ? "NULL" : "'$postID'";
+		//$title = is_null($postID) ? "NULL" : "'$title'";
 		$location = is_null($location) ? "NULL" : "'$location'";
 		$description = is_null($description) ? "NULL" : "'$description'";
 		$startDate = is_null($startDate) ? "NULL" : "'$startDate'";

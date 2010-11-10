@@ -1,51 +1,50 @@
 <?php
 /**
- * This file contains the EC_Calendar class.
+ * This file contains WP Events Calendar plugin.
  *
- * @package 			WP-Events-Calendar
+ * This is the main WPEC file.
+ * @internal			Complete the description.
+ *
+ * @package			WP-Events-Calendar
+ * @since			1.0
  * 
  * @autbor			Luke Howell <luke@wp-eventscalendar.com>
- * @author 			Brad Bodine <brad@wp-eventscalendar.com>
- * @author 			René MALKA <heirem@wp-eventscalendar.com>
- * @author 			Louis Lapointe <laplix@wp-eventscalendar.com>
  *
- * @copyright 			Copyright (c) 2007-2009 Luke Howell
- * @copyright 			Copyright (c) 2007-2009 Brad Bodine
- * @copyright 			Copyright (c) 2008-2009 René Malka
- * @copyright 			Copyright (c) 2009      Louis Lapointe
+ * @copyright			Copyright (c) 2007-2009 Luke Howell
  *
- * @license 			GPLv3 {@link http://www.gnu.org/licenses/gpl}
+ * @license			GPLv3 {@link http://www.gnu.org/licenses/gpl}
  * @filesource
  */
 /*
----------------------------------------------------------------------
+--------------------------------------------------------------------------
+$Id$
+--------------------------------------------------------------------------
 This file is part of the WordPress Events Calendar plugin project.
 
 For questions, help, comments, discussion, etc., please join our
 forum at {@link http://www.wp-eventscalendar.com/forum}. You can
-also go to Luke's ({@link http://www.lukehowelll.com}) and
-Heirem's ({@link http://heirem.fr}) blogs.
+also go to Luke's ({@link http://www.lukehowelll.com}) blog.
 
-You can also submit bugs or feature requests at this address:
-http://tracker.wp-eventscalendar.com/my_view_page.php.
-
-This program is free software: you can redistribute it and/or modify
+WP Events Calendar is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
----------------------------------------------------------------------
+--------------------------------------------------------------------------
 */
 if(!class_exists("EC_Calendar")) :
 require_once(EVENTSCALENDARCLASSPATH . '/ec_db.class.php');
-
+$ecoptions = get_option('optionsEventsCalendar');
+$ec_hide = $ecoptions['hidesponsor'] == 'true' ? 'display:none;' : '';
+$widget_sponsor_message = '<span style="' . $ec_hide . 'font-size:.75em;">WPEC is proudly sponsored by <br /><a href="http://www.truemediaconcepts.com">True Media Concepts</a></span>' . "\n";
+$large_sponsor_message = '<span style="' . $ec_hide . 'font-size:.7em;">WP Events Calendar is proudly sponsored by <a href="http://www.truemediaconcepts.com">True Media Concepts</a></span>' . "\n";
 /**
  * Displays the events list and the calendars
  *
@@ -65,6 +64,9 @@ class EC_Calendar {
 	 * Constructor.
 	 */
 	function __construct() {
+		/* added locale.php include to function constructor for WP 3.0 - Patch 6.6.1 by Byron Rode */
+		require_once(ABSWPINCLUDE.'/locale.php');
+		/* end add */
 		$this->locale = new WP_Locale;
 	}
 
@@ -113,6 +115,7 @@ class EC_Calendar {
     */
 	function displayEventList($num) {
 		global $current_user;
+		global $widget_sponsor_message;
 
 		// Localisation
 		// not needed here anymore. moved to constructor.
@@ -172,6 +175,7 @@ class EC_Calendar {
 				$output = stripslashes($output);
 
 			echo $output . "\n";
+			echo  $widget_sponsor_message;
 			$js->listData($events);
 		}
 	}
@@ -190,6 +194,7 @@ class EC_Calendar {
 	 *                            	full name will be shown. Defaults to 2.
 	 */
 	function displayWidget($year, $month, $days = array(), $day_name_length = 2) {
+		global $widget_sponsor_message;
 		// Localisation
 		// not needed here anymore. moved to constructor.
 		//load_default_textdomain();
@@ -328,6 +333,7 @@ class EC_Calendar {
 		$js->calendarData($month, $year);
 		echo $end_script . "\n";
 		echo '<!-- WPEC script ends here. -->'."\n";
+		echo  $widget_sponsor_message;
 		echo '</div>' . "\n";
 	}
 
@@ -345,7 +351,8 @@ class EC_Calendar {
 	 * @param int $day_name_length			day name length to display. if equal to zero,
 	 *						day names won't be shown. default to 7.
     */
-	function displayLarge($year, $month, $before_large_calendar = "", $days = array(), $day_name_length = 7 ) {
+	function displayLarge($year, $month, $before_large_calendar = "", $days = array(), $day_name_length = 7, $echo=true ) {
+		global $large_sponsor_message;
 		// Localisation 
 		// not needed here anymore. moved to constructor.
 		//load_default_textdomain();
@@ -452,12 +459,18 @@ EOHTML;
 		$calendar .= "</tr></tbody></table>\n".'<script type="text/javascript">'."\n".'// <![CDATA['."\n";
 		$calendar .= ' jQuery.noConflict();'."\n".' (function($) {'."\n".' ecd.jq(document).ready(function() {'."\n";
 		
-		echo $before_large_calendar;
-		echo $calendar;
+		if($echo !== false){
 		
-		$js->calendarDataLarge($month, $year);
+			echo $before_large_calendar;
+			echo $calendar;
+			
+			echo $js->calendarDataLarge($month, $year);
 
-		echo ' });'."\n".' })(jQuery);'."\n".'//]]>'."\n".'</script>'."\n".'</div>';
+			echo ' });'."\n".' })(jQuery);'."\n".'//]]>'."\n".'</script>'."\n".$large_sponsor_message.'</div>';
+		
+		}else{
+			return $before_large_calendar . $calendar . $js->calendarDataLarge($month, $year, false) . ' });'."\n".' })(jQuery);'."\n".'//]]>'."\n".'</script>'."\n".$large_sponsor_message.'</div>';
+		}
 	}
 
 	/**

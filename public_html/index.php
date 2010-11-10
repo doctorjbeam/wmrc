@@ -13,10 +13,6 @@
  */
 define('WP_USE_THEMES', true);
 
-#require("./mobile-start.php"); 
-
 /** Loads the WordPress Environment and Template */
 require('./wp-blog-header.php');
-
-#require("./mobile-end.php");
 ?>

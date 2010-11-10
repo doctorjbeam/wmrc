@@ -2,9 +2,9 @@
 /*
 Plugin Name: WP Events Calendar
 Plugin URI: http://www.wp-eventscalendar.com
-Description: There are options under the widget options to specify the view of the calendar in the sidebar. The widget can be a list for upcoming events or a calendar. If you do not have a widget ready theme then you can place '&lt;?php SidebarEventsCalendar();?&gt;'?, or '&lt;?php SidebarEventsList();?&gt;' for an event list, in the sidebar.php file of your theme. If you want to display a large calendar in a post or a page, simply place "[[EventsCalendarLarge]]" in the html of the post or page. Make sure to leave off the quotes.
-Version: 6.6-beta
-Author: Luke Howell, Brad Bodine, Rene Malka, Louis Lapointe
+Description: There are options under the widget options to specify the view of the calendar in the sidebar. The widget can be a list for upcoming events or a calendar. If you do not have a widget ready theme then you can place `&lt;?php SidebarEventsCalendar();?&gt;`, or `&lt;?php SidebarEventsList();?&gt;` for an event list, in the sidebar.php file of your theme. If you want to display a large calendar in a post or a page, simply place `[events-calendar-large]` in the html of the post or page. Make sure to leave off the quotes.
+Version: 6.7.8
+Author: Luke Howell
 Author URI: http://www.lukehowell.com
 */
 /**
@@ -17,14 +17,8 @@ Author URI: http://www.lukehowell.com
  * @since			1.0
  * 
  * @autbor			Luke Howell <luke@wp-eventscalendar.com>
- * @author			Brad Bodine <brad@wp-eventscalendar.com>
- * @author			René MALKA <heirem@wp-eventscalendar.com>
- * @author			Louis Lapointe <laplix@wp-eventscalendar.com>
  *
  * @copyright			Copyright (c) 2007-2009 Luke Howell
- * @copyright			Copyright (c) 2007-2009 Brad Bodine
- * @copyright			Copyright (c) 2008-2009 René Malka
- * @copyright			Copyright (c) 2009      Louis Lapointe
  *
  * @license			GPLv3 {@link http://www.gnu.org/licenses/gpl}
  * @filesource
@@ -37,8 +31,7 @@ This file is part of the WordPress Events Calendar plugin project.
 
 For questions, help, comments, discussion, etc., please join our
 forum at {@link http://www.wp-eventscalendar.com/forum}. You can
-also go to Luke's ({@link http://www.lukehowelll.com}) and
-Heirem's ({@link http://heirem.fr}) blogs.
+also go to Luke's ({@link http://www.lukehowelll.com}) blog.
 
 WP Events Calendar is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -55,8 +48,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------
 */
 
+/** Set timezone **/
+if( function_exists( 'date_default_timezone_set' ) )
+	date_default_timezone_set(get_option('timezone_string'));
+
 /** Events-Calendar version */
-define('EVENTSCALENDARVERS', 'Version: 6.6');
+define('EVENTSCALENDARVERS', 'Version: 6.7.6');
 
 /** using native directory separator for paths */
 if (!defined('DS'))
@@ -79,10 +76,13 @@ require_once(EVENTSCALENDARCLASSPATH.DS.'ec_calendar.class.php');
 require_once(EVENTSCALENDARCLASSPATH.DS.'ec_db.class.php');
 require_once(EVENTSCALENDARCLASSPATH.DS.'ec_widget.class.php');
 require_once(EVENTSCALENDARCLASSPATH.DS.'ec_management.class.php');
+require_once(ABSPATH.'wp-includes/pluggable.php');
 
 /** Init Localisation */
 load_default_textdomain();
-require_once(ABSWPINCLUDE.'/locale.php');
+/* removed and moved for 6.6.1 patch by Byron */
+// require_once(ABSWPINCLUDE.'/locale.php');
+/* end patch */
 load_plugin_textdomain('events-calendar',PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/lang');
 
 /** DatePicker localisation */
@@ -151,30 +151,33 @@ function EC_send_headers() {
  * @uses EC_Widget
  * @uses EC_Management
  */
-function EventsCalendarINIT() {
-	$inadmin = strstr($svr_uri, 'wp-admin');
-	if (!$inadmin) {
-		wp_enqueue_script('jquerybgiframe', '/wp-content/plugins/events-calendar/js/jquery.bgiframe.js', array('jquery'), '2.1');
-		wp_enqueue_script('jquerydimensions', '/wp-content/plugins/events-calendar/js/jquery.dimensions.js', array('jquery'), '1.0b2');
-		wp_enqueue_script('jquerytooltip', '/wp-content/plugins/events-calendar/js/jquery.tooltip.min.js', array('jquery'), '1.3');
-		wp_enqueue_script('thickbox');
-	}
 
-	// registers the widget and the widget control.
-	// FIXME I think these should only be registered as needed, e.g.
-	// widget when not in admin and widget control when in admin.
-	// that would relieve WP burden. Not really sure about that though.
-	// --laplix
-	if ((!$inadmin) OR (($inadmin) && ((strstr($svr_uri, 'widget'))))) {
-		$widget = new EC_Widget();
-		$management = new EC_Management();
+/* updated INIT function for EC6.6.1 patch by Byron Rode */
+ function EventsCalendarINIT() {
+	$options = get_option('optionsEventsCalendar');
+    $inadmin = FALSE;
+    if (function_exists('is_admin')) {
+        $inadmin = is_admin();
+    }
+    else {
+        $inadmin = strstr($svr_uri, 'wp-admin');
+    }
 
-		if(!function_exists('register_sidebar_widget'))
-			return;
+    if (!$inadmin) {
+        wp_enqueue_script('jquerybgiframe', '/wp-content/plugins/events-calendar/js/jquery.bgiframe.js', array('jquery'), '2.1');
+        // wp_enqueue_script('jquerydimensions', '/wp-content/plugins/events-calendar/js/jquery.dimensions.js', array('jquery'), '1.0b2');
+        if($options['disableTooltips'] !== 'yes') {
+			wp_enqueue_script('jquerytooltip', '/wp-content/plugins/events-calendar/js/jquery.tooltip.min.js', array('jquery'), '1.3');
+		}
+        wp_enqueue_script('thickbox');
+    }
 
-		register_sidebar_widget(__('Events Calendar','events-calendar'), array(&$widget, 'display'));
-		register_widget_control(__('Events Calendar','events-calendar'), array(&$management, 'widgetControl'));
-	}
+    // Always register both the widget and widget control objects
+    // in case there are dependencies between the two.
+     $widget = new EC_Widget();
+     $management = new EC_Management();
+     register_sidebar_widget(__('Events Calendar','events-calendar'), array(&$widget, 'display'));
+     register_widget_control(__('Events Calendar','events-calendar'), array(&$management, 'widgetControl'));
 }
 
 /**
@@ -201,14 +204,14 @@ function EventsCalendarManagementINIT() {
 		global $loc_lang;
     	wp_enqueue_script('jquerybgiframe', '/wp-content/plugins/events-calendar/js/jquery.bgiframe.js', array('jquery'), '2.1');
     	wp_enqueue_script('jquerydimensions', '/wp-content/plugins/events-calendar/js/jquery.dimensions.js', array('jquery'), '1.0b2');
-    	wp_enqueue_script('jquerytooltip', '/wp-content/plugins/events-calendar/js/jquery.tooltip.min.js', array('jquery'), '1.3');
+		wp_enqueue_script('jquerytooltip', '/wp-content/plugins/events-calendar/js/jquery.tooltip.min.js', array('jquery'), '1.3');
     	wp_enqueue_script('jqueryuicore', '/wp-content/plugins/events-calendar/js/ui.core.min.js', array('jquery'), '1.5.2');
     	wp_enqueue_script('jqueryuidatepicker', '/wp-content/plugins/events-calendar/js/ui.datepicker.js', array('jquery'), '1.5.2');
 		
 		if ($loc_lang != 'en')
 			wp_enqueue_script('jqueryuidatepickerlang', '/wp-content/plugins/events-calendar/js/i18n/ui.datepicker-'.$loc_lang.'.js', array('jquery'), '1.5.2');
 		
-		wp_enqueue_script('jqueryclockpicker', '/wp-content/plugins/events-calendar/js/jquery.clockpick.1.2.6.js', array('jquery'), '1.2.6');
+		wp_enqueue_script('jqueryclockpicker', '/wp-content/plugins/events-calendar/js/jquery.clockpick.min.js', array('jquery'), '1.2.6');
 //		add_submenu_page('events-calendar', __('Events Calendar','events-calendar'), __('Calendar','events-calendar'), $EC_userLevel, 'events-calendar', array(&$management, 'calendarOptions'));
 
 		add_submenu_page('events-calendar', __('Events Calendar','events-calendar'), __('Calendar','events-calendar'), $EC_userLevel, 'events-calendar', '');
@@ -275,7 +278,7 @@ function EventsCalendarActivated() {
  * This is used by the filterEventsCalendarLarge() function to get
  * the content of a page before and after the short tag [[EventsCalendarLarge]]
  *
- * @param string $haystack      page or post where the shrt tag lives
+ * @param string $haystack      page or post swhere the shrt tag lives
  * @param string $needle        the short tag
  * @param bool   $before_needle do we want the data before the short tag?
  * @return string
@@ -298,15 +301,28 @@ function ec_strstr($haystack, $needle, $before_needle=FALSE) {
  * @uses ec_strstr()
  * @uses EC_Calendar
  */
-function filterEventsCalendarLarge($content) {
-	if(preg_match("[EventsCalendarLarge]",$content)) {
+
+/**
+ * Old function using content filter removed for 6.6.1 patch for WP3.0 Compatibility
+ * function filterEventsCalendarLarge($content) {
+ *	if(preg_match("[EventsCalendarLarge]",$content)) {
+ *		$calendar = new EC_Calendar();
+ *		$ec_match_filter = '[[EventsCalendarLarge]]';
+ *		$before_large_calendar = ec_strstr($content, $ec_match_filter, TRUE);
+ *		$content = ec_strstr($content, $ec_match_filter, FALSE);
+ *		$calendar->displayLarge(date('Y'), date('m'), $before_large_calendar);
+ *	}
+ *	return $content;
+ * }
+ */
+
+/* New function with updated function argument at the end of the function. 
+ * @bool(true) - echo's out content
+ * @bool(false) - returns content, works better for use in WP Shortcode
+ */
+function filterEventsCalendarLarge() {
 		$calendar = new EC_Calendar();
-		$ec_match_filter = '[[EventsCalendarLarge]]';
-		$before_large_calendar = ec_strstr($content, $ec_match_filter, TRUE);
-		$content = ec_strstr($content, $ec_match_filter, FALSE);
-		$calendar->displayLarge(date('Y'), date('m'), $before_large_calendar);
-	}
-	return $content;
+		return $calendar->displayLarge( date('Y'), date('m'), "", array(), 7, false );
 }
 
 /**
@@ -332,9 +348,15 @@ function SidebarEventsList($num = 5) {
 }
 
 add_action('activate_events-calendar/events-calendar.php', 'EventsCalendarActivated');
-add_action('plugins_loaded', 'EventsCalendarINIT');
+/* Changed to "init" to allow loading with WP3.0 and patch 6.6.1 by Byron Rode */
+// add_action('plugins_loaded', 'EventsCalendarINIT');
+add_action('init', 'EventsCalendarINIT');
+/* End Change */
 add_action('admin_menu', 'EventsCalendarManagementINIT');
 add_action('wp_head', 'EventsCalendarHeaderScript');
 add_action('admin_head', 'EventsCalendarAdminHeaderScript');
-add_filter('the_content', 'filterEventsCalendarLarge');
+/* Removed filter and created a shortcode for patch 6.6.1 by Byron Rode */
+// add_filter('the_content', 'filterEventsCalendarLarge');
+add_shortcode('events-calendar-large', 'filterEventsCalendarLarge');
+/* End Change */
 ?>

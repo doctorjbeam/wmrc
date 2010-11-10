@@ -1,47 +1,43 @@
 <?php
 /**
- * This file contains the EC_ManagementJS class.
+ * This file contains WP Events Calendar plugin.
  *
- * @package 			WP-Events-Calendar
+ * This is the main WPEC file.
+ * @internal			Complete the description.
+ *
+ * @package			WP-Events-Calendar
+ * @since			1.0
  * 
- * @autbor 			Luke Howell <luke@wp-eventscalendar.com>
- * @author 			Brad Bodine <brad@wp-eventscalendar.com>
- * @author 			René MALKA <heirem@wp-eventscalendar.com>
- * @author 			Louis Lapointe <laplix@wp-eventscalendar.com>
+ * @autbor			Luke Howell <luke@wp-eventscalendar.com>
  *
- * @copyright 			Copyright (c) 2007-2009 Luke Howell
- * @copyright 			Copyright (c) 2007-2009 Brad Bodine
- * @copyright 			Copyright (c) 2008-2009 René Malka
- * @copyright 			Copyright (c) 2009      Louis Lapointe
+ * @copyright			Copyright (c) 2007-2009 Luke Howell
  *
- * @license 			GPLv3 {@link http://www.gnu.org/licenses/gpl}
+ * @license			GPLv3 {@link http://www.gnu.org/licenses/gpl}
  * @filesource
  */
 /*
----------------------------------------------------------------------
+--------------------------------------------------------------------------
+$Id$
+--------------------------------------------------------------------------
 This file is part of the WordPress Events Calendar plugin project.
 
 For questions, help, comments, discussion, etc., please join our
 forum at {@link http://www.wp-eventscalendar.com/forum}. You can
-also go to Luke's ({@link http://www.lukehowelll.com}) and
-Heirem's ({@link http://heirem.fr}) blogs.
+also go to Luke's ({@link http://www.lukehowelll.com}) blog.
 
-You can also submit bugs or feature requests at this address:
-http://tracker.wp-eventscalendar.com/my_view_page.php.
-
-This program is free software: you can redistribute it and/or modify
+WP Events Calendar is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
----------------------------------------------------------------------
+--------------------------------------------------------------------------
 */
 if(!class_exists('EC_ManagementJS')) :
 
@@ -111,14 +107,14 @@ class EC_ManagementJS {
 
             if ($output != '') {
 					// make sure we don't double escape
-					if (preg_match("/\'/", $output))
+					if (preg_match("/\'|\"/", $output))
 						$output = stripslashes($output);
 ?>
 <script type="text/javascript">
 // <![CDATA[
 //jQuery.noConflict();
 (function($) {
-	$('#events-calendar-<?php echo $d;?>').append("<div id=\"events-calendar-container-<?php echo $id;?>\"><?php echo $asslink, $asspost;?><span id=\"events-calendar-<?php echo $id;?>\"><?php echo stripslashes($title);?>&nbsp;</span><img id=\"events-calendar-delete-<?php echo $id;?>\" src=\"<?php echo EVENTSCALENDARIMAGESURL;?>/delete.gif\" style=\"width:12px;height:12px;\" title=\"<?php _e('Delete','events-calendar');?>\" /><\div>");
+	$('#events-calendar-<?php echo $d;?>').append("<div id=\"events-calendar-container-<?php echo $id;?>\"><?php echo $asslink, $asspost;?><span id=\"events-calendar-<?php echo $id;?>\"><?php echo $title;?>&nbsp;</span><img id=\"events-calendar-delete-<?php echo $id;?>\" src=\"<?php echo EVENTSCALENDARIMAGESURL;?>/delete.gif\" style=\"width:12px;height:12px;\" title=\"<?php _e('Delete','events-calendar');?>\" /><\div>");
 	$('#events-calendar-<?php echo $id;?>')
 		.attr('title', '<?php echo addslashes($output);?>')
 		.css('color', 'black')
@@ -187,7 +183,7 @@ class EC_ManagementJS {
 			$military = 'true';
 		else
 			$military = 'false';
-?>
+?><?php /*
 <script type="text/javascript">
 // <![CDATA[
 //jQuery.noConflict();
@@ -241,7 +237,7 @@ class EC_ManagementJS {
 	 });
 })(jQuery);
 //]]>
-</script>
+</script>*/?>
 <?php
   }
 }

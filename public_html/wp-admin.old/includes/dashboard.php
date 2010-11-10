@@ -21,7 +21,7 @@ function wp_dashboard_setup() {
 
 
 	/* Register Widgets and Controls */
-
+/*
 	// Recent Comments Widget
 	$mod_comments = wp_count_comments();
 	$mod_comments = $mod_comments->moderated;
@@ -126,7 +126,7 @@ function wp_dashboard_setup() {
 			)
 		);
 		*/
-
+/*
 	// Hook to register new widgets
 	do_action( 'wp_dashboard_setup' );
 
@@ -156,6 +156,7 @@ function wp_dashboard_setup() {
 
 	if ( $update )
 		update_option( 'dashboard_widget_options', $widget_options );
+		*/
 }
 
 // Echoes out the dashboard

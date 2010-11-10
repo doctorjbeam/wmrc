@@ -1,4 +1,12 @@
-<?php require_once('../../../wp-load.php');
+<?php
+/**
+ * @package TinyMCE
+ * @author Moxiecode
+ * @copyright Copyright © 2005-2006, Moxiecode Systems AB, All rights reserved.
+ */
+
+/** @ignore */
+require_once('../../../wp-load.php');
 header('Content-Type: text/html; charset=' . get_bloginfo('charset'));
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -6,8 +14,8 @@ header('Content-Type: text/html; charset=' . get_bloginfo('charset'));
 <head>
 <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo get_option('blog_charset'); ?>" />
 <title><?php _e('Rich Editor Help') ?></title>
-<script type="text/javascript" src="tiny_mce_popup.js?ver=311"></script>
-<?php 
+<script type="text/javascript" src="tiny_mce_popup.js?ver=3223"></script>
+<?php
 wp_admin_css( 'global', true );
 wp_admin_css( 'wp-admin', true );
 ?>
@@ -15,42 +23,46 @@ wp_admin_css( 'wp-admin', true );
 	#wphead {
 		font-size: 80%;
 		border-top: 0;
-		color:#555;
-		background-color: #e4f2fd;
+		color: #555;
+		background-color: #f1f1f1;
 	}
 	#wphead h1 {
-		font-size: 32px;
+		font-size: 24px;
 		color: #555;
 		margin: 0;
 		padding: 10px;
 	}
-	#adminmenu {
-		padding-top: 2px;
-		padding-left: 15px;
-		background-color: #e4f2fd;
-		border-color: #C6D9E9;
+	#tabs {
+		padding: 15px 15px 3px;
+		background-color: #f1f1f1;
+		border-bottom: 1px solid #dfdfdf;
 	}
-	#adminmenu a.current {
+	#tabs li {
+		display: inline;
+	}
+	#tabs a.current {
 		background-color: #fff;
-		border-color: #c6d9e9;
+		border-color: #dfdfdf;
 		border-bottom-color: #fff;
 		color: #d54e21;
 	}
-	#adminmenu a {
+	#tabs a {
 		color: #2583AD;
 		padding: 6px;
-		border-width: 1px;
+		border-width: 1px 1px 0;
 		border-style: solid solid none;
-		border-color: #E4F2FD;
+		border-color: #f1f1f1;
+		text-decoration: none;
 	}
-	#adminmenu a:hover {
+	#tabs a:hover {
 		color: #d54e21;
 	}
 	.wrap h2 {
-		border-bottom-color:#DADADA;
-		color:#666666;
-		margin: 12px 0;
+		border-bottom-color: #dfdfdf;
+		color: #555;
+		margin: 5px 0;
 		padding: 0;
+		font-size: 18px;
 	}
 	#user_info {
 		right: 5%;
@@ -58,15 +70,15 @@ wp_admin_css( 'wp-admin', true );
 	}
 	h3 {
 		font-size: 1.1em;
-		margin-top: 20px;
+		margin-top: 10px;
 		margin-bottom: 0px;
 	}
 	#flipper {
 		margin: 0;
 		padding: 5px 20px 10px;
 		background-color: #fff;
-		border-left: 1px solid #c6d9e9;
-		border-bottom: 1px solid #c6d9e9;
+		border-left: 1px solid #dfdfdf;
+		border-bottom: 1px solid #dfdfdf;
 	}
 	* html {
         overflow-x: hidden;
@@ -85,7 +97,7 @@ wp_admin_css( 'wp-admin', true );
 	}
 	.top .key {
 		text-align: center;
-		width: 36px;
+		width: 5em;
 	}
 	.top .action {
 		text-align: left;
@@ -116,9 +128,9 @@ wp_admin_css( 'wp-admin', true );
 		border-bottom: 0px;
 	}
 </style>
-<?php if ( ('rtl' == $wp_locale->text_direction) ) : ?>
+<?php if ( is_rtl() ) : ?>
 <style type="text/css">
-	#wphead, #adminmenu {
+	#wphead, #tabs {
 		padding-left: auto;
 		padding-right: 15px;
 	}
@@ -155,10 +167,10 @@ wp_admin_css( 'wp-admin', true );
 </script>
 </head>
 <body>
-<div class="zerosize"></div>
+
 <div id="wphead"><h1><?php echo get_bloginfo('blogtitle'); ?></h1></div>
 
-<ul id="adminmenu">
+<ul id="tabs">
 	<li><a id="tab1" href="javascript:flipTab(1)" title="<?php _e('Basics of Rich Editing') ?>" accesskey="1" tabindex="1" class="current"><?php _e('Basics') ?></a></li>
 	<li><a id="tab2" href="javascript:flipTab(2)" title="<?php _e('Advanced use of the Rich Editor') ?>" accesskey="2" tabindex="2"><?php _e('Advanced') ?></a></li>
 	<li><a id="tab3" href="javascript:flipTab(3)" title="<?php _e('Hotkeys') ?>" accesskey="3" tabindex="3"><?php _e('Hotkeys') ?></a></li>
@@ -198,13 +210,13 @@ wp_admin_css( 'wp-admin', true );
 		<script type="text/javascript">
 		if ( ! tinymce.isWebKit )
 			document.write("<tr><th>b</th><td><?php _e('Bold') ?></td><th>i</th><td><?php _e('Italic') ?></td></tr>"+
-			"<tr><th>u</th><td><?php _e('Underline') ?></td><th>1</th><td><?php _e('Header 1') ?></td></tr>"+
-			"<tr><th>2</th><td><?php _e('Header 2') ?></td><th>3</th><td><?php _e('Header 3') ?></td></tr>"+
-			"<tr><th>4</th><td><?php _e('Header 4') ?></td><th>5</th><td><?php _e('Header 5') ?></td></tr>"+
-			"<tr><th>6</th><td><?php _e('Header 6') ?></td><th>9</th><td><?php _e('Address') ?></td></tr>")
+			"<tr><th>u</th><td><?php _e('Underline') ?></td><th>1</th><td><?php _e('Heading 1') ?></td></tr>"+
+			"<tr><th>2</th><td><?php _e('Heading 2') ?></td><th>3</th><td><?php _e('Heading 3') ?></td></tr>"+
+			"<tr><th>4</th><td><?php _e('Heading 4') ?></td><th>5</th><td><?php _e('Heading 5') ?></td></tr>"+
+			"<tr><th>6</th><td><?php _e('Heading 6') ?></td><th>9</th><td><?php _e('Address') ?></td></tr>")
 		</script>
 	</table>
-	
+
 	<p><?php _e('The following shortcuts use different access keys: Alt + Shift + letter.') ?></p>
 	<table class="keys" width="100%" style="border: 0 none;">
 		<tr class="top"><th class="key center"><?php _e('Letter') ?></th><th class="left"><?php _e('Action') ?></th><th class="key center"><?php _e('Letter') ?></th><th class="left"><?php _e('Action') ?></th></tr>
@@ -228,12 +240,12 @@ wp_admin_css( 'wp-admin', true );
 	<h2><?php _e('About TinyMCE'); ?></h2>
 
     <p><?php _e('Version:'); ?> <span id="version"></span> (<span id="date"></span>)</p>
-	<p><?php printf(__('TinyMCE is a platform independent web based Javascript HTML WYSIWYG editor control released as Open Source under %sLGPL</a>	by Moxiecode Systems AB. It has the ability to convert HTML TEXTAREA fields or other HTML elements to editor instances.'), '<a href="'.get_bloginfo('url').'/wp-includes/js/tinymce/license.txt" target="_blank" title="'.__('GNU Library General Public Licence').'">') ?></p>
+	<p><?php printf(__('TinyMCE is a platform independent web based Javascript HTML WYSIWYG editor control released as Open Source under %sLGPL</a>	by Moxiecode Systems AB. It has the ability to convert HTML TEXTAREA fields or other HTML elements to editor instances.'), '<a href="'.home_url('/wp-includes/js/tinymce/license.txt').'" target="_blank" title="'.__('GNU Library General Public Licence').'">') ?></p>
 	<p><?php _e('Copyright &copy; 2003-2007, <a href="http://www.moxiecode.com" target="_blank">Moxiecode Systems AB</a>, All rights reserved.') ?></p>
 	<p><?php _e('For more information about this software visit the <a href="http://tinymce.moxiecode.com" target="_blank">TinyMCE website</a>.') ?></p>
 
 	<div id="buttoncontainer">
-		<a href="http://www.moxiecode.com" target="_new"><img src="themes/advanced/img/gotmoxie.png" alt="<?php _e('Got Moxie?') ?>" style="border: none;" /></a>
+		<a href="http://www.moxiecode.com" target="_blank"><img src="themes/advanced/img/gotmoxie.png" alt="<?php _e('Got Moxie?') ?>" style="border: none;" /></a>
 		<a href="http://sourceforge.net/projects/tinymce/" target="_blank"><img src="themes/advanced/img/sflogo.png" alt="<?php _e('Hosted By Sourceforge') ?>" style="border: none;" /></a>
 		<a href="http://www.freshmeat.net/projects/tinymce" target="_blank"><img src="themes/advanced/img/fm.gif" alt="<?php _e('Also on freshmeat') ?>" style="border: none;" /></a>
 	</div>

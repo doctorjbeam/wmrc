@@ -11,7 +11,7 @@
 /**
  * Adds data to the cache, if the cache key doesn't aleady exist.
  *
- * @since 2.0
+ * @since 2.0.0
  * @uses $wp_object_cache Object Cache Class
  * @see WP_Object_Cache::add()
  *
@@ -35,7 +35,7 @@ function wp_cache_add($key, $data, $flag = '', $expire = 0) {
  * does not mean that plugins can't implement this function when they need to
  * make sure that the cache is cleaned up after WordPress no longer needs it.
  *
- * @since 2.0
+ * @since 2.0.0
  *
  * @return bool Always returns True
  */
@@ -46,7 +46,7 @@ function wp_cache_close() {
 /**
  * Removes the cache contents matching ID and flag.
  *
- * @since 2.0
+ * @since 2.0.0
  * @uses $wp_object_cache Object Cache Class
  * @see WP_Object_Cache::delete()
  *
@@ -63,7 +63,7 @@ function wp_cache_delete($id, $flag = '') {
 /**
  * Removes all cache items.
  *
- * @since 2.0
+ * @since 2.0.0
  * @uses $wp_object_cache Object Cache Class
  * @see WP_Object_Cache::flush()
  *
@@ -78,7 +78,7 @@ function wp_cache_flush() {
 /**
  * Retrieves the cache contents from the cache by ID and flag.
  *
- * @since 2.0
+ * @since 2.0.0
  * @uses $wp_object_cache Object Cache Class
  * @see WP_Object_Cache::get()
  *
@@ -96,7 +96,7 @@ function wp_cache_get($id, $flag = '') {
 /**
  * Sets up Object Cache Global and assigns it.
  *
- * @since 2.0
+ * @since 2.0.0
  * @global WP_Object_Cache $wp_object_cache WordPress Object Cache
  */
 function wp_cache_init() {
@@ -106,7 +106,7 @@ function wp_cache_init() {
 /**
  * Replaces the contents of the cache with new data.
  *
- * @since 2.0
+ * @since 2.0.0
  * @uses $wp_object_cache Object Cache Class
  * @see WP_Object_Cache::replace()
  *
@@ -144,25 +144,40 @@ function wp_cache_set($key, $data, $flag = '', $expire = 0) {
 /**
  * Adds a group or set of groups to the list of global groups.
  *
- * @since 2.6
+ * @since 2.6.0
  *
  * @param string|array $groups A group or an array of groups to add
  */
 function wp_cache_add_global_groups( $groups ) {
-	// Default cache doesn't persist so nothing to do here.
-	return;
+	global $wp_object_cache;
+
+	return $wp_object_cache->add_global_groups($groups);
 }
 
 /**
  * Adds a group or set of groups to the list of non-persistent groups.
  *
- * @since 2.6
+ * @since 2.6.0
  *
  * @param string|array $groups A group or an array of groups to add
  */
 function wp_cache_add_non_persistent_groups( $groups ) {
 	// Default cache doesn't persist so nothing to do here.
 	return;
+}
+
+/**
+ * Reset internal cache keys and structures.  If the cache backend uses global blog or site IDs as part of its cache keys,
+ * this function instructs the backend to reset those keys and perform any cleanup since blog or site IDs have changed since cache init.
+ *
+ * @since 2.6.0
+ *
+ * @param string|array $groups A group or an array of groups to add
+ */
+function wp_cache_reset() {
+	global $wp_object_cache;
+
+	return $wp_object_cache->reset();
 }
 
 /**
@@ -188,7 +203,7 @@ class WP_Object_Cache {
 	 *
 	 * @var array
 	 * @access private
-	 * @since 2.0
+	 * @since 2.0.0
 	 */
 	var $cache = array ();
 
@@ -197,14 +212,14 @@ class WP_Object_Cache {
 	 *
 	 * @var array
 	 * @access private
-	 * @since 2.0
+	 * @since 2.0.0
 	 */
-	var $non_existant_objects = array ();
+	var $non_existent_objects = array ();
 
 	/**
 	 * The amount of times the cache data was already stored in the cache.
 	 *
-	 * @since 2.5
+	 * @since 2.5.0
 	 * @access private
 	 * @var int
 	 */
@@ -215,9 +230,18 @@ class WP_Object_Cache {
 	 *
 	 * @var int
 	 * @access public
-	 * @since 2.0
+	 * @since 2.0.0
 	 */
 	var $cache_misses = 0;
+
+	/**
+	 * List of global groups
+	 *
+	 * @var array
+	 * @access protected
+	 * @since 3.0.0
+	 */
+	var $global_groups = array();
 
 	/**
 	 * Adds data to the cache if it doesn't already exist.
@@ -226,7 +250,7 @@ class WP_Object_Cache {
 	 * @uses WP_Object_Cache::set Sets the data after the checking the cache
 	 *		contents existance.
 	 *
-	 * @since 2.0
+	 * @since 2.0.0
 	 *
 	 * @param int|string $id What to call the contents in the cache
 	 * @param mixed $data The contents to store in the cache
@@ -234,14 +258,28 @@ class WP_Object_Cache {
 	 * @param int $expire When to expire the cache contents
 	 * @return bool False if cache ID and group already exists, true on success
 	 */
-	function add($id, $data, $group = 'default', $expire = '') {
-		if (empty ($group))
+	function add( $id, $data, $group = 'default', $expire = '' ) {
+		if ( empty ($group) )
 			$group = 'default';
 
-		if (false !== $this->get($id, $group, false))
+		if (false !== $this->get($id, $group))
 			return false;
 
 		return $this->set($id, $data, $group, $expire);
+	}
+
+	/**
+	 * Sets the list of global groups.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $groups List of groups that are global.
+	 */
+	function add_global_groups( $groups ) {
+		$groups = (array) $groups;
+
+		$this->global_groups = array_merge($this->global_groups, $groups);
+		$this->global_groups = array_unique($this->global_groups);
 	}
 
 	/**
@@ -251,10 +289,10 @@ class WP_Object_Cache {
 	 * to false, then nothing will happen. The $force parameter is set to false
 	 * by default.
 	 *
-	 * On success the group and the id will be added to the 
-	 * $non_existant_objects property in the class.
+	 * On success the group and the id will be added to the
+	 * $non_existent_objects property in the class.
 	 *
-	 * @since 2.0
+	 * @since 2.0.0
 	 *
 	 * @param int|string $id What the contents in the cache are called
 	 * @param string $group Where the cache contents are grouped
@@ -266,18 +304,18 @@ class WP_Object_Cache {
 		if (empty ($group))
 			$group = 'default';
 
-		if (!$force && false === $this->get($id, $group, false))
+		if (!$force && false === $this->get($id, $group))
 			return false;
 
 		unset ($this->cache[$group][$id]);
-		$this->non_existant_objects[$group][$id] = true;
+		$this->non_existent_objects[$group][$id] = true;
 		return true;
 	}
 
 	/**
 	 * Clears the object cache of all data
 	 *
-	 * @since 2.0
+	 * @since 2.0.0
 	 *
 	 * @return bool Always returns true
 	 */
@@ -294,13 +332,13 @@ class WP_Object_Cache {
 	 * ID in the cache group. If the cache is hit (success) then the contents
 	 * are returned.
 	 *
-	 * On failure, the $non_existant_objects property is checked and if the
+	 * On failure, the $non_existent_objects property is checked and if the
 	 * cache group and ID exist in there the cache misses will not be
-	 * incremented. If not in the nonexistant objects property, then the cache
+	 * incremented. If not in the nonexistent objects property, then the cache
 	 * misses will be incremented and the cache group and ID will be added to
-	 * the nonexistant objects.
+	 * the nonexistent objects.
 	 *
-	 * @since 2.0
+	 * @since 2.0.0
 	 *
 	 * @param int|string $id What the contents in the cache are called
 	 * @param string $group Where the cache contents are grouped
@@ -308,18 +346,21 @@ class WP_Object_Cache {
 	 *		contents on success
 	 */
 	function get($id, $group = 'default') {
-		if (empty ($group))
+		if ( empty ($group) )
 			$group = 'default';
 
-		if (isset ($this->cache[$group][$id])) {
+		if ( isset ($this->cache[$group][$id]) ) {
 			$this->cache_hits += 1;
-			return $this->cache[$group][$id];
+			if ( is_object($this->cache[$group][$id]) )
+				return wp_clone($this->cache[$group][$id]);
+			else
+				return $this->cache[$group][$id];
 		}
 
-		if ( isset ($this->non_existant_objects[$group][$id]) )
+		if ( isset ($this->non_existent_objects[$group][$id]) )
 			return false;
 
-		$this->non_existant_objects[$group][$id] = true;
+		$this->non_existent_objects[$group][$id] = true;
 		$this->cache_misses += 1;
 		return false;
 	}
@@ -327,7 +368,7 @@ class WP_Object_Cache {
 	/**
 	 * Replace the contents in the cache, if contents already exist
 	 *
-	 * @since 2.0
+	 * @since 2.0.0
 	 * @see WP_Object_Cache::set()
 	 *
 	 * @param int|string $id What to call the contents in the cache
@@ -340,10 +381,23 @@ class WP_Object_Cache {
 		if (empty ($group))
 			$group = 'default';
 
-		if (false === $this->get($id, $group, false))
+		if ( false === $this->get($id, $group) )
 			return false;
 
 		return $this->set($id, $data, $group, $expire);
+	}
+
+	/**
+	 * Reset keys
+	 *
+	 * @since 3.0.0
+	 */
+	function reset() {
+		// Clear out non-global caches since the blog ID has changed.
+		foreach ( array_keys($this->cache) as $group ) {
+			if ( !in_array($group, $this->global_groups) )
+				unset($this->cache[$group]);
+		}
 	}
 
 	/**
@@ -358,7 +412,7 @@ class WP_Object_Cache {
 	 * expire for each time a page is accessed and PHP finishes. The method is
 	 * more for cache plugins which use files.
 	 *
-	 * @since 2.0
+	 * @since 2.0.0
 	 *
 	 * @param int|string $id What to call the contents in the cache
 	 * @param mixed $data The contents to store in the cache
@@ -367,27 +421,30 @@ class WP_Object_Cache {
 	 * @return bool Always returns true
 	 */
 	function set($id, $data, $group = 'default', $expire = '') {
-		if (empty ($group))
+		if ( empty ($group) )
 			$group = 'default';
 
-		if (NULL === $data)
+		if ( NULL === $data )
 			$data = '';
+
+		if ( is_object($data) )
+			$data = wp_clone($data);
 
 		$this->cache[$group][$id] = $data;
 
-		if(isset($this->non_existant_objects[$group][$id]))
-			unset ($this->non_existant_objects[$group][$id]);
+		if ( isset($this->non_existent_objects[$group][$id]) )
+			unset ($this->non_existent_objects[$group][$id]);
 
 		return true;
 	}
 
 	/**
-	 * Echos the stats of the caching.
+	 * Echoes the stats of the caching.
 	 *
 	 * Gives the cache hits, and cache misses. Also prints every cached group,
 	 * key and the data.
 	 *
-	 * @since 2.0
+	 * @since 2.0.0
 	 */
 	function stats() {
 		echo "<p>";
@@ -408,7 +465,7 @@ class WP_Object_Cache {
 	/**
 	 * PHP4 constructor; Calls PHP 5 style constructor
 	 *
-	 * @since 2.0
+	 * @since 2.0.0
 	 *
 	 * @return WP_Object_Cache
 	 */

@@ -1,47 +1,43 @@
 <?php
 /**
- * This file contains the EC_Management class.
+ * This file contains WP Events Calendar plugin.
  *
- * @package 			WP-Events-Calendar
+ * This is the main WPEC file.
+ * @internal			Complete the description.
+ *
+ * @package			WP-Events-Calendar
+ * @since			1.0
  * 
- * @autbor 			Luke Howell <luke@wp-eventscalendar.com>
- * @author 			Brad Bodine <brad@wp-eventscalendar.com>
- * @author 			René MALKA <heirem@wp-eventscalendar.com>
- * @author 			Louis Lapointe <laplix@wp-eventscalendar.com>
+ * @autbor			Luke Howell <luke@wp-eventscalendar.com>
  *
- * @copyright 			Copyright (c) 2007-2009 Luke Howell
- * @copyright 			Copyright (c) 2007-2009 Brad Bodine
- * @copyright 			Copyright (c) 2008-2009 René Malka
- * @copyright 			Copyright (c) 2009      Louis Lapointe
+ * @copyright			Copyright (c) 2007-2009 Luke Howell
  *
- * @license 			GPLv3 {@link http://www.gnu.org/licenses/gpl}
+ * @license			GPLv3 {@link http://www.gnu.org/licenses/gpl}
  * @filesource
  */
 /*
----------------------------------------------------------------------
+--------------------------------------------------------------------------
+$Id$
+--------------------------------------------------------------------------
 This file is part of the WordPress Events Calendar plugin project.
 
 For questions, help, comments, discussion, etc., please join our
 forum at {@link http://www.wp-eventscalendar.com/forum}. You can
-also go to Luke's ({@link http://www.lukehowelll.com}) and
-Heirem's ({@link http://heirem.fr}) blogs.
+also go to Luke's ({@link http://www.lukehowelll.com}) blog.
 
-You can also submit bugs or feature requests at this address:
-http://tracker.wp-eventscalendar.com/my_view_page.php.
-
-This program is free software: you can redistribute it and/or modify
+WP Events Calendar is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
----------------------------------------------------------------------
+--------------------------------------------------------------------------
 */
 if(!class_exists('EC_Management')):
 require_once(EVENTSCALENDARCLASSPATH . '/ec_calendar.class.php');
@@ -213,7 +209,7 @@ class EC_Management {
 			$endTime = isset($_POST['EC_endTime']) && !empty($_POST['EC_endTime']) ? $_POST['EC_endTime'] : null;
 			$accessLevel = $_POST['EC_accessLevel'];
 			$postID = isset($_POST['EC_postID']) && !empty($_POST['EC_postID']) ? $_POST['EC_postID'] : null;
-			$this->editEvent($id, stripslashes($title), stripslashes($location), $linkout, stripslashes($description), $startDate, $startTime, $endDate, $endTime, $accessLevel, $postID);
+			$this->editEvent($id, $title, $location, $linkout, $description, $startDate, $startTime, $endDate, $endTime, $accessLevel, $postID);
 			$splitDate = split("-", $startDate);
 			$this->month = $splitDate[1];
 			$this->year = $splitDate[0];
@@ -270,7 +266,7 @@ class EC_Management {
 	 * @param int    $postID	associated post id if available.
 	 */
 	function editEvent($id, $title, $location, $linkout, $description, $startDate, $startTime, $endDate, $endTime, $accessLevel, $postID) {
-		$this->db->editEvent($id, $title, $location, $linkout, $description, $startDate, $startTime, $endDate, $endTime, $accessLevel, $postID);
+		$this->db->editEvent($id, addslashes($title), $location, $linkout, $description, $startDate, $startTime, $endDate, $endTime, $accessLevel, $postID);
 	}
 
 	/**
@@ -313,7 +309,7 @@ class EC_Management {
         </tr>
         <tr>
           <th scope="row"><label for="startTime"><?php _e('Start Time (HH:MM, can be blank)','events-calendar'); ?></label></th>
-          <td><input class="ec-edit-form-time" autocomplete="OFF" type="text" name="EC_startTime" id="EC_startTime" /><img src="<?php echo EVENTSCALENDARIMAGESURL."/time.png";?>" id="EC_start_clockpick" onClick='jQuery("#EC_alertmsg").fadeOut("slow");'></td>
+          <td><input class="ec-edit-form-time" autocomplete="OFF" type="text" name="EC_startTime" id="EC_startTime" /><?php /*<img src="<?php echo EVENTSCALENDARIMAGESURL."/time.png";?>" id="EC_start_clockpick" onClick='jQuery("#EC_alertmsg").fadeOut("slow");'>*/?></td>
         </tr>
         <tr>
           <th scope="row"><label for="endDate"><?php _e('End Date (YYYY-MM-DD, if blank will be same as start date)','events-calendar'); ?></label></th>
@@ -321,7 +317,7 @@ class EC_Management {
         </tr>
         <tr>
           <th scope="row"><label for="endTime"><?php _e('End Time (HH:MM, can be blank)','events-calendar'); ?></label></th>
-          <td><input class="ec-edit-form-time" autocomplete="OFF" type="text" name="EC_endTime" id="EC_endTime" /><img src="<?php echo EVENTSCALENDARIMAGESURL."/time.png";?>" id="EC_end_clockpick" onClick='jQuery("#EC_alertmsg").fadeOut("slow");'></td>
+          <td><input class="ec-edit-form-time" autocomplete="OFF" type="text" name="EC_endTime" id="EC_endTime" /><?php /*<img src="<?php echo EVENTSCALENDARIMAGESURL."/time.png";?>" id="EC_end_clockpick" onClick='jQuery("#EC_alertmsg").fadeOut("slow");'>*/?></td>
         </tr>
         <tr>
           <th scope="row"><label for="endTime"><?php _e('Visibility Level','events-calendar'); ?></label></th>
@@ -451,11 +447,11 @@ class EC_Management {
       <table id="EC_management-edit-form" summary="Event Edit Form" class="ec-edit-form">
         <tr>
           <th scope="row"><label for="title"><?php _e('Title','events-calendar'); ?></label></th>
-          <td><input class="ec-edit-form-text" type="text" name="EC_title" id="EC_title" value="<?php echo stripslashes($event->eventTitle);?>" /></td>
+          <td><input class="ec-edit-form-text" type="text" name="EC_title" id="EC_title" value="<?php echo htmlentities(stripslashes($event->eventTitle),ENT_QUOTES);?>" /></td>
         </tr>
         <tr>
           <th scope="row"><label for="location"><?php _e('Location','events-calendar'); ?></label></th>
-          <td><input class="ec-edit-form-text" type="text" name="EC_location" id="EC_location" value="<?php echo stripslashes($event->eventLocation);?>" /></td>
+          <td><input class="ec-edit-form-text" type="text" name="EC_location" id="EC_location" value="<?php echo htmlentities(stripslashes($event->eventLocation),ENT_QUOTES);?>" /></td>
         </tr>
         <tr>
           <th scope="row"><label for="linkout"><?php _e('Link out','events-calendar'); ?></label></th>
@@ -471,7 +467,7 @@ class EC_Management {
         </tr>
         <tr>
           <th scope="row"><label for="startTime"><?php _e('Start Time (HH:MM, can be blank)','events-calendar'); ?></label></th>
-          <td><input class="ec-edit-form-time" autocomplete="OFF" type="text" name="EC_startTime" id="EC_startTime" value="<?php echo $event->eventStartTime;?>" /><img src="<?php echo EVENTSCALENDARIMAGESURL."/time.png";?>" width="20" height="20" id="EC_start_clockpick" style="vertical-align:middle;" onClick='jQuery("#EC_alertmsg").fadeOut("slow");'></td>
+          <td><input class="ec-edit-form-time" autocomplete="OFF" type="text" name="EC_startTime" id="EC_startTime" value="<?php echo $event->eventStartTime;?>" /><?php /*<img src="<?php echo EVENTSCALENDARIMAGESURL."/time.png";?>" width="20" height="20" id="EC_start_clockpick" style="vertical-align:middle;" onClick='jQuery("#EC_alertmsg").fadeOut("slow");'>*/?></td>
         </tr>
         <tr>
           <th scope="row"><label for="endDate"><?php _e('End Date (YYYY-MM-DD, if blank will be same as start date)','events-calendar'); ?></label></th>
@@ -479,7 +475,7 @@ class EC_Management {
         </tr>
         <tr>
           <th scope="row"><label for="endTime"><?php _e('End Time (HH:MM, can be blank)','events-calendar'); ?></label></th>
-          <td><input class="ec-edit-form-time" autocomplete="OFF" type="text" name="EC_endTime" id="EC_endTime" value="<?php echo $event->eventEndTime;?>" /><img src="<?php echo EVENTSCALENDARIMAGESURL."/time.png";?>" width="20" height="20" id="EC_end_clockpick" style="vertical-align:middle;" onClick='jQuery("#EC_alertmsg").fadeOut("slow");'></td>
+          <td><input class="ec-edit-form-time" autocomplete="OFF" type="text" name="EC_endTime" id="EC_endTime" value="<?php echo $event->eventEndTime;?>" /><?php /*<img src="<?php echo EVENTSCALENDARIMAGESURL."/time.png";?>" width="20" height="20" id="EC_end_clockpick" style="vertical-align:middle;" onClick='jQuery("#EC_alertmsg").fadeOut("slow");'>*/?></td>
         </tr>
         <tr>
           <th scope="row"><label for="endTime"><?php _e('Visibility Level','events-calendar'); ?></label></th>
@@ -654,12 +650,14 @@ class EC_Management {
 			$options['dateFormatLarge'] = 'n/j/Y';
 			$options['timeFormatLarge'] = 'h:i a';
 			$options['adaptedCSS'] = '';
+			$options['disableTooltips'] = '';
 			$options['todayCSS'] = 'border:thin solid blue;font-weight: bold;';
 			$options['dayHasEventCSS'] = 'color:red';
 			$options['timeStep'] = '30';
 			$options['daynamelength'] = '3';
 			$options['daynamelengthLarge'] = '3';
 			$options['jqueryextremstatus'] = 'false';
+			$options['hidesponsor'] = 'false';
 		}
 		if (isset($_POST['optionsEventsCalendarSubmitted']) && $_POST['optionsEventsCalendarSubmitted']) {
 			//echo var_dump($_POST);
@@ -670,10 +668,12 @@ class EC_Management {
 			$options['timeStep'] = isset($_POST['timeStep']) && !empty($_POST['timeStep']) ? $_POST['timeStep'] : '30';
 			$options['adaptedCSS'] = isset($_POST['adaptedCSS']) ? $_POST['adaptedCSS'] : '';
 			$options['todayCSS'] = isset($_POST['todayCSS']) && !empty($_POST['todayCSS']) ? $_POST['todayCSS'] : 'border:thin solid blue;font-weight: bold;';
+			$options['disableTooltips'] = isset($_POST['disableTooltips']) ? $_POST['disableTooltips'] : '';
 			$options['dayHasEventCSS'] = isset($_POST['dayHasEventCSS']) && !empty($_POST['dayHasEventCSS']) ? $_POST['dayHasEventCSS'] : 'color:red;';
 			$options['daynamelength'] = isset($_POST['daynamelength']) && !empty($_POST['daynamelength']) ? $_POST['daynamelength'] : '3';
 			$options['daynamelengthLarge'] = isset($_POST['daynamelengthLarge']) && !empty($_POST['daynamelengthLarge']) ? $_POST['daynamelengthLarge'] : '3';
 			$options['jqueryextremstatus'] = isset($_POST['jqxstatus']) ? $_POST['jqxstatus'] : 'false';
+			$options['hidesponsor'] = isset($_POST['hidesponsor']) ? $_POST['hidesponsor'] : 'false';
 			$options['accessLevel'] = $_POST['EC_accessLevel'];
 
 			update_option('optionsEventsCalendar', $options);
@@ -723,6 +723,10 @@ class EC_Management {
           <th width="33%" scope="row" valign="top" style="text-align:right;"><label for="timeStep"><?php _e('Step Increment for Time Selector (in minutes)','events-calendar'); ?></label></th>
           <td width="67%"><input type="text" name="timeStep" id="timeStep" value="<?php echo $options['timeStep'];?>" /></td>
         </tr>
+		<tr>
+          <th width="33%" scope="row" valign="top" style="text-align:right;"><label for="disableTooltips"><?php _e('Disable Tooltips (Checked = Yes)','events-calendar'); ?></label></th>
+          <td width="67%"><input type="checkbox" <?php echo ($options['disableTooltips']==true) ? "checked " : "";?>name="disableTooltips" id="EC_disableTooltips" value="yes" /></td>
+        </tr>
         <tr>
           <th width="33%" scope="row" valign="top" style="text-align:right;"><label for="adaptedCSS"><?php _e('I have adapted the Events-Calendar stylesheet (checked = yes)','events-calendar'); ?></label></th>
           <td width="67%"><input type="checkbox" <?php echo ($options['adaptedCSS']==true) ? "checked " : "";?>name="adaptedCSS" id="EC_adaptedCSS" value="on" /></td>
@@ -752,12 +756,30 @@ class EC_Management {
           <th width="33%" scope="row" valign="top" style="text-align:right;"><label for="jqxstatus"><?php _e('jQuery Extrem Protection (checked = yes)','events-calendar'); ?></label></th>
           <td width="67%"><input type="checkbox" <?php echo ($options['jqueryextremstatus']=="true") ? " checked" : "";?> name="jqxstatus" id="EC_jqxstatus" value="true" /> <?php _e('(Check if you don\'t see the Tooltips)','events-calendar'); ?></td>
         </tr>
+				<tr>
+          <th width="33%" scope="row" valign="top" style="text-align:right;"><label for="hidesponsor"><?php _e('Hide sponsor message?','events-calendar'); ?></label></th>
+          <td width="67%"><input type="checkbox" <?php echo ($options['hidesponsor']=="true") ? " checked" : "";?> name="hidesponsor" id="EC_hidesponsor" value="true" /> <?php _e('(Hides the sponsor message.  Please don\'t, but if you do please donate.)','events-calendar'); ?></td>
+        </tr>
       </table>
       <input type="hidden" name="optionsEventsCalendarSubmitted" value="1" />
       <p class="submit">
         <input type="submit" name="submit" value="<?php _e('Update Options','events-calendar'); ?> &raquo;">
       </p>
     </form>
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		<input type="hidden" name="cmd" value="_donations">
+		<input type="hidden" name="business" value="me@lukehowell.com">
+		<input type="hidden" name="item_name" value="Luke Howell">
+		<input type="hidden" name="no_shipping" value="1">
+		<input type="hidden" name="return" value="http://www.lukehowell.com/thanks-for-the-donation/">
+		<input type="hidden" name="no_note" value="1">
+		<input type="hidden" name="currency_code" value="USD">
+		<input type="hidden" name="tax" value="0">
+		<input type="hidden" name="lc" value="US">
+		<input type="hidden" name="bn" value="PP-DonationsBF">
+		<input border="0" type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" name="submit" alt="Donate Now">
+		<img height="1" border="0" width="1" alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif">
+		</form>
     <script type="text/javascript">
     // <![CDATA[
       jQuery.noConflict();

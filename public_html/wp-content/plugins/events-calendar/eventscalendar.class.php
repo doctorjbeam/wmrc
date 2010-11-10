@@ -1,12 +1,29 @@
 <?php
+/**
+ * This file contains WP Events Calendar plugin.
+ *
+ * This is the main WPEC file.
+ * @internal			Complete the description.
+ *
+ * @package			WP-Events-Calendar
+ * @since			1.0
+ * 
+ * @autbor			Luke Howell <luke@wp-eventscalendar.com>
+ *
+ * @copyright			Copyright (c) 2007-2009 Luke Howell
+ *
+ * @license			GPLv3 {@link http://www.gnu.org/licenses/gpl}
+ * @filesource
+ */
 /*
+--------------------------------------------------------------------------
+$Id$
 --------------------------------------------------------------------------
 This file is part of the WordPress Events Calendar plugin project.
 
 For questions, help, comments, discussion, etc., please join our
 forum at {@link http://www.wp-eventscalendar.com/forum}. You can
-also go to Luke's ({@link http://www.lukehowelll.com}) and
-Heirem's ({@link http://heirem.fr}) blogs.
+also go to Luke's ({@link http://www.lukehowelll.com}) blog.
 
 WP Events Calendar is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
