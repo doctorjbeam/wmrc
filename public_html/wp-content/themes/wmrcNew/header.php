@@ -71,7 +71,7 @@
 			</div>
 			
 			<!-- Navigation Menu -->
-			<?php wp_nav_menu(); ?>
+			<?php wp_nav_menu(array("container" => "ul", "container_id" => "navigation")); ?>
 		</div>
 		<div class="clear"></div>
 		&nbsp;
