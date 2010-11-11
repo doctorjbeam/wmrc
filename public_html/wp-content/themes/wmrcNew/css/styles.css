@@ -104,11 +104,12 @@ DESCRIPTION: A premium business and portfolio theme.
 
 /* Site Navigation */
 
-	ul#navigation						{text-transform:uppercase;}
-	ul#navigation li 					{float:left; display:inline; margin : 0 0 0 10px;}
-	ul#navigation li a					{ display:block; padding:44px 0 0; text-decoration:none; color:#000000; font-size: 90%; font-weight:bold;}
-	ul#navigation li a:hover,
-	ul#navigation li.current_page_item a	{ color: #bd1313; }
+	ul#menu-nav	{ margin-right: 1em; }
+	ul#menu-nav						{text-transform:uppercase;}
+	ul#menu-nav li 					{float:left; display:inline; margin : 0 0 0 10px; float: right; }
+	ul#menu-nav li a					{ display:block; padding:44px 0 0; text-decoration:none; color:#000000; font-size: 90%; font-weight:bold;}
+	ul#menu-nav li a:hover,
+	ul#menu-nav li.current_page_item a	{ color: #bd1313; }
 
 /* Footer */
 

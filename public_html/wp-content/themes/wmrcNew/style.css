@@ -16,7 +16,7 @@ body	{ background: #e3e3e3; }
 
 .menu	{ float: right; text-transform: uppercase; margin-top: -2px; }
 .menu ul	{ margin: 0; padding: 0; }
-.menu li	{ list-style: none; float: left; }
+.menu li	{ list-style: none; float: right; }
 .menu li a	{ display: block; padding: 0 0.4em; height: 20px; line-height: 20px; }
 .menu li a			{ text-decoration: none; color: #000; font-weight: bold; font-size: 90%; }
 .menu li a:hover	{ color: #039; text-decoration: underline; }
