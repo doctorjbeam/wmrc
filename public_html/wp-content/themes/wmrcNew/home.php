@@ -118,7 +118,7 @@ Template Name: Home Page
 					<h4 class="title ">News</h4>
 					<p>Read the latest news from the Club.</p>
 				</a>
-				<a class="quicknavgrid_3 quicknav" href="/about">
+				<a class="quicknavgrid_3 quicknav" href="/about-the-club">
 					<h4 class="title ">About the club</h4>
 					<p>Explore the history of the club, and see what our future plans are.</p>
 				</a>
