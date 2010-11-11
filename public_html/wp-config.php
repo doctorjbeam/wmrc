@@ -1,5 +1,6 @@
 <?php
 // ** MySQL settings ** //
+define('WP_CACHE', true); //Added by WP-Cache Manager
 define('DB_NAME', 'mgreen_wmrc');    // The name of the database
 define('DB_USER', 'mgreen_wmrc');     // Your MySQL username
 define('DB_PASSWORD', 'wangcaster'); // ...and password
