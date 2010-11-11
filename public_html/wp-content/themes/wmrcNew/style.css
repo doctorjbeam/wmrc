@@ -14,12 +14,12 @@ body	{ background: #e3e3e3; }
 #header .wrapper	{ padding: 20px; background: #fafcfd; }
 #header img	 	{ margin-top: 27px; margin-bottom: -20px; }
 
-#menu	{ float: right; text-transform: uppercase; margin-top: -2px; }
-#menu ul	{ margin: 0; padding: 0; }
-#menu li	{ list-style: none; float: left; }
-#menu li a	{ display: block; padding: 0 0.4em; height: 20px; line-height: 20px; }
-#menu li a			{ text-decoration: none; color: #000; font-weight: bold; font-size: 90%; }
-#menu li a:hover	{ color: #039; text-decoration: underline; }
+.menu	{ float: right; text-transform: uppercase; margin-top: -2px; }
+.menu ul	{ margin: 0; padding: 0; }
+.menu li	{ list-style: none; float: left; }
+.menu li a	{ display: block; padding: 0 0.4em; height: 20px; line-height: 20px; }
+.menu li a			{ text-decoration: none; color: #000; font-weight: bold; font-size: 90%; }
+.menu li a:hover	{ color: #039; text-decoration: underline; }
 
 
 #body li	{ list-style: none; }
