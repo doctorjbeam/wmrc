@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: News
+Template Name: This is not the news template
 */
 ?>
 <?php define('WP_USE_THEMES', false); get_header(); ?>
