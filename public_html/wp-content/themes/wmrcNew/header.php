@@ -1,6 +1,6 @@
 <?php
-	header ('Cache-Control: public, max-age=' . (60 * 60 * 24 * 7));
-	header ('Expires: ' . gmdate("D, d M Y H:i:s", time() + (60 * 60 * 24 * 7)) . " GMT");
+	#header ('Cache-Control: public, max-age=' . (60 * 60 * 24 * 7));
+	#header ('Expires: ' . gmdate("D, d M Y H:i:s", time() + (60 * 60 * 24 * 7)) . " GMT");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
