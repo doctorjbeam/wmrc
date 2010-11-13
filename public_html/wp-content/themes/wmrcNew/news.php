@@ -3,7 +3,7 @@
 Template Name: News
 */
 ?>
-<?php get_header(); ?>
+<?php define('WP_USE_THEMES', false); get_header(); ?>
 		<div id="body">
 			<div class="fullPage">
 				<div class="newsContent grid_8">
