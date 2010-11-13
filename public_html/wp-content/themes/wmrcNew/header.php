@@ -75,4 +75,3 @@
 		</div>
 		<div class="clear"></div>
 		&nbsp;
-		<div id="body">

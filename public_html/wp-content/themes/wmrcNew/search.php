@@ -6,9 +6,7 @@ Template Name: Search
 <?php get_header(); ?>
 		<div id="body">
 			<div class="grid_12 fullPage">
-
-
-	<div id="content" class="narrowcolumn">
+				<div id="content" class="narrowcolumn">
 
 	<?php if (have_posts()) : ?>
 
