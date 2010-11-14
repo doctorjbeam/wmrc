@@ -305,3 +305,12 @@ p.message	{ background: #333; color: #f2f2f2 !important; padding: 0.4em 0.8em; f
 #quicknav .quicknav:hover { 
 	background: #ddd; 
 }
+
+.newsTitle a { 
+	font-size: 2em; 
+	font-family: "Myriad Pro", Calibri, Arial, Helvetica, sans-serif; 
+	color: #333; 
+	text-shadow: 1px 1px 3px #ccc; 
+	display: block; 
+	margin: 1em 0; 
+}
