@@ -55,7 +55,7 @@ Template Name: Home Page
 		<div class="hr grid_12 clearfix">&nbsp;</div>
 	<?php else: ?>
 		<div class="fullPage">
-			<div class="newsContent grid_8">
+			<div class="newsContent grid_12">
 				<img style="position: relative; left: 1px;" alt="Latest News" src="<?php bloginfo('stylesheet_directory'); ?>/img/newsTitle.png"/>
 				<?php if (have_posts()) : ?>
 					<?php while (have_posts()) : the_post(); ?>
