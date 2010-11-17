@@ -33,7 +33,7 @@ Template Name: Home Page
 		<h2 class="grid_12 caption clearfix">Welcome to the <span>Waverley Model Railway Club</span> website</h2>
 		<p class="caption">Established 1970</p>
 		
-		<div class="hr grid_12 clearfix quicknavhr">&nbsp;</div>
+		<div class="hr grid_12 clearfix">&nbsp;</div>
 		<div id="quicknav" class="grid_12">
 			<a class="quicknavgrid_3 quicknav alpha" href="/news">
 				<h4 class="title ">News</h4>
@@ -61,8 +61,7 @@ Template Name: Home Page
 					<?php while (have_posts()) : the_post(); ?>
 					<div class="post" id="post-<?php the_ID(); ?>">
 						<p class="newsTitle">
-							<a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a>
-							<small><?php the_time('F jS, Y') ?> by <?php the_author() ?></small>
+							<span><?php the_title(); ?></span>
 						</p>
 						<p><?php the_content('Read the rest of this entry &raquo;'); ?></p>
 					</div>
