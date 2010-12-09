@@ -47,7 +47,7 @@ Template Name: Home Page
 				<h4 class="title ">Our exhibitions</h4>
 				<p>Take a look at the plans for our annual Queen's Birthday weekend exhibition.</p>
 			</a>
-			<a class="quicknavgrid_3 quicknav" href="/gallery2">
+			<a class="quicknavgrid_3 quicknav" href="/gallery3">
 				<h4 class="title ">Photo Gallery</h4>
 				<p>Photos from our exhibitions and others we have been invited to, submitted by members of the Club.</p>
 			</a>
